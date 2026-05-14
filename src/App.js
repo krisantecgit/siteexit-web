@@ -1,22 +1,22 @@
 import './App.css';
-import Header from './componnets/Header';
+import Header from './components/Header';
 // import '../node_modules/bootstrap/dist/css/bootstrap.css';
 // import '../node_modules/jquery/dist/jquery.js';
 // import '../node_modules/bootstrap/dist/js/bootstrap.bundle.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import CarouselPage from './componnets/Carousel.jsx';
-import ProductGrid from './componnets/ProductsPage.jsx';
+import CarouselPage from './components/Carousel.jsx';
+import ProductGrid from './components/ProductsPage.jsx';
 import { useRef } from "react";
-import Testimonials from './componnets/Testimonial.jsx';
-import HowItWorks from './componnets/HowDoesItWorks.jsx';
-import Footer from './componnets/Footer.jsx';
+import Testimonials from './components/Testimonial.jsx';
+import HowItWorks from './components/HowDoesItWorks.jsx';
+import Footer from './components/Footer.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import DetailsSection from './componnets/DetailsSection.jsx';
-import ContactForm from './componnets/ContactUs.jsx';
-import SiteExit from './componnets/SiteExit.jsx';
-import KeyFeatures from './componnets/KeyFeatures.jsx';
-import About from './componnets/About.jsx';
+import DetailsSection from './components/DetailsSection.jsx';
+import ContactForm from './components/ContactUs.jsx';
+import SiteExit from './components/SiteExit.jsx';
+import KeyFeatures from './components/KeyFeatures.jsx';
+import About from './components/About.jsx';
 
 function App() {
   const productRef = useRef(null);

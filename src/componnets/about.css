@@ -1,0 +1,154 @@
+.benefits-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+    padding: 50px 20px;
+}
+
+.benefits-content {
+    flex: 1;
+    padding-right: 50px;
+}
+
+.highlight-text {
+    color: #FE7900;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #222;
+    display: inline-block;
+}
+
+.about-title::after {
+    content: "";
+    width: 60%;
+    display: block;
+    background-color: #FE7900;
+    height: 4px;
+}
+
+
+.features-grid {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.benefits-image {
+    position: relative;
+    width: 50%;
+}
+
+.benefits-image img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.benefits-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+    padding: 50px 20px;
+    flex-wrap: wrap;
+}
+
+/* Content section */
+.benefits-content {
+    flex: 1;
+    padding-right: 50px;
+}
+
+.highlight-text {
+    color: #FE7900;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #222;
+}
+
+.description {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Features grid */
+.features-grid {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+
+/* Image Section */
+.benefits-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.benefits-image img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .benefits-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .benefits-content {
+        padding-right: 0;
+    }
+
+    .features-grid {
+        justify-content: center;
+    }
+
+    .benefits-image {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .benefits-container {  
+        padding: 0 20px;
+    }
+
+
+    .features-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .benefit-img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        margin: auto;
+    }
+}

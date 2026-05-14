@@ -1,0 +1,90 @@
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* for modal close button css */
+.modal-header .btn-close {
+    filter: invert(1);
+  }
+  
+
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.product-details {
+    color: white;
+}
+
+.product-name {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.product-name::after {
+    content: "";
+    display: block;
+    width: 20%;
+    height: 2px;
+    background: black;
+    margin: 2px auto 0;
+}
+
+h2::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 4px;
+    background: #FE7900;
+    /* margin: 8px auto 0; */
+}
+
+.card {
+    border: none;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* .card:hover {
+    transform: scale(.05);
+} */
+
+.card-img-top {
+    border: 3px solid #FE7900;
+    /* padding: 10px; */
+    transition: border 0.3s ease-in-out;
+}
+
+.card-img-top:hover {
+    border: 3px solid rgb(0, 162, 255) !important;
+}
+
+.card-body {
+    padding: 20px;
+    background-color: #FE7900;
+}
+
+.btn {
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-outline-dark:hover {
+    background: black;
+    color: white;
+}
+
+.btn-dark:hover {
+    background: #FE7900;
+    color: black;
+}
+
+@media screen and (max-width : 768px) {
+    .cards-margin {
+        margin-top: 10px;
+    }
+}

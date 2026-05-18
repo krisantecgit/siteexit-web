@@ -1,0 +1,509 @@
+/* ============================================================
+   PRODUCT DETAIL — productDetail.css
+   Layout: full-height split — dark left image / white right info
+   Brand: #FE7900 orange · #0F525B teal · #6EB3CA blue
+   ============================================================ */
+
+/* ── page shell ─────────────────────────────────────────── */
+.pd-page {
+  background: #f4f4f2;
+  min-height: 80vh;
+  padding: 40px 0 72px;
+}
+
+.pd-wrap {
+  margin: 0 auto;
+  max-width: 1240px;
+  padding: 0 24px;
+}
+
+/* ── loader ─────────────────────────────────────────────── */
+.pd-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 100px 0;
+}
+
+.pd-spinner {
+  animation: pd-spin 0.75s linear infinite;
+  border: 3px solid #e2e2e2;
+  border-radius: 50%;
+  border-top-color: #fe7900;
+  height: 44px;
+  width: 44px;
+}
+
+@keyframes pd-spin { to { transform: rotate(360deg); } }
+
+.pd-error {
+  background: #fff3ed;
+  border-left: 4px solid #fe7900;
+  border-radius: 10px;
+  color: #7a3a00;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 18px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SPLIT SHELL
+   Left = dark card  |  Right = white card
+════════════════════════════════════════════════════════════ */
+.pd-shell {
+  border-radius: 18px;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  min-height: 600px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(7, 19, 31, 0.12);
+}
+
+/* ── LEFT — dark image column ────────────────────────────── */
+.pd-left {
+  background:
+    linear-gradient(145deg, rgba(35, 52, 45, 0.98), rgba(119, 96, 66, 0.78)),
+    #23342d;
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-left-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 32px 28px;
+}
+
+/* chips row */
+.pd-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.pd-chip {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #ffffffcc;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  padding: 5px 14px;
+  text-transform: uppercase;
+}
+
+.pd-chip-deal {
+  background: #fe7900;
+  color: #fff;
+}
+
+/* image frame */
+.pd-img-frame {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(7, 19, 31, 0.16);
+  display: flex;
+  justify-content: center;
+  min-height: 360px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  padding: 28px;
+}
+
+.pd-img-frame img {
+  display: block;
+  max-height: 380px;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.38s ease;
+}
+
+.pd-img-frame:hover img {
+  transform: scale(1.05);
+}
+
+.pd-thumbs {
+  display: grid;
+  gap: 10px;
+  grid-auto-columns: 72px;
+  grid-auto-flow: column;
+  margin-bottom: 20px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scrollbar-width: thin;
+}
+
+.pd-thumb {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.82);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  height: 72px;
+  justify-content: center;
+  padding: 6px;
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.14s;
+  width: 72px;
+}
+
+.pd-thumb:hover {
+  border-color: rgba(254, 121, 0, 0.55);
+  transform: translateY(-1px);
+}
+
+.pd-thumb.active {
+  background: #fff;
+  border-color: #fe7900;
+  box-shadow: 0 8px 22px rgba(254, 121, 0, 0.25);
+}
+
+.pd-thumb img {
+  display: block;
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+/* wishlist */
+.pd-wish-btn {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #ffffffaa;
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 8px;
+  justify-content: center;
+  padding: 11px 0;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  width: 100%;
+}
+
+.pd-wish-btn svg {
+  font-size: 17px;
+}
+
+.pd-wish-btn:hover {
+  background: rgba(254, 121, 0, 0.18);
+  border-color: #fe7900;
+  color: #fe7900;
+}
+
+/* ── RIGHT — info column ─────────────────────────────────── */
+.pd-right {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 44px 44px 40px;
+}
+
+/* title */
+.pd-title-block {
+  margin-bottom: 28px;
+}
+
+.pd-brand {
+  color: #6c747c;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.pd-name {
+  color: #07131f;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* spec row — horizontal strip */
+.pd-spec-row {
+  background: #f6f6f4;
+  border-radius: 10px;
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+
+.pd-spec-item {
+  border-right: 1px solid #e4e4e4;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px;
+}
+
+.pd-spec-item:last-child {
+  border-right: none;
+}
+
+.pd-spec-label {
+  color: #9aa0a8;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.pd-spec-val {
+  color: #07131f;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* price cards — side by side */
+.pd-price-cards {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 28px;
+}
+
+/* ── mode toggle ─────────────────────────────────────────── */
+.pd-mode-toggle {
+  display: flex;
+  gap: 0;
+  background: #f6f6f4;
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.pd-mode-option {
+  align-items: center;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 7px;
+  padding: 9px 24px;
+  transition: background 0.18s, color 0.18s;
+  color: #6c747c;
+  margin: 0;
+}
+
+.pd-mode-option input[type="radio"] {
+  display: none;
+}
+
+.pd-mode-option.active {
+  background: #fe7900;
+  color: #fff;
+}
+
+/* ── date picker ─────────────────────────────────────────── */
+.pd-date-wrap {
+  border-top: 1px solid rgba(110, 179, 202, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+.pd-date-label {
+  color: #0f525b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.pd-date-input {
+  background: #fff;
+  border: 1.5px solid #6eb3ca;
+  border-radius: 8px;
+  color: #07131f;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  padding: 9px 12px;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  width: 100%;
+}
+
+.pd-date-input:focus {
+  border-color: #fe7900;
+  box-shadow: 0 0 0 3px rgba(254, 121, 0, 0.12);
+}
+
+.pd-price-card {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 20px 18px;
+  position: relative;
+}
+
+.pd-buy-card {
+  background: #fff8f2;
+  border: 1.5px solid #fcc49a;
+}
+
+.pd-rent-card {
+  background: #f3f6ee;
+  border: 1.5px solid #8ca86c;
+}
+
+.pd-price-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.pd-buy-card .pd-price-tag { color: #fe7900; }
+.pd-rent-card .pd-price-tag { color: #496a2d; }
+
+.pd-amount {
+  color: #07131f;
+  display: block;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.pd-original {
+  color: #9aa0a8;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.pd-save {
+  background: #fe7900;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 10px;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+}
+
+.pd-per-day {
+  color: #6c747c;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* CTA */
+.pd-cta {
+  background: #fe7900;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin-bottom: 32px;
+  min-height: 56px;
+  text-transform: uppercase;
+  transition: background 0.18s, transform 0.14s;
+  width: 100%;
+}
+
+.pd-cta:hover {
+  background: #d46300;
+  transform: translateY(-1px);
+}
+
+/* description */
+.pd-desc {
+  border-top: 1px solid #eeeeee;
+  flex: 1;
+  padding-top: 24px;
+}
+
+.pd-desc-heading {
+  color: #07131f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.pd-desc-text {
+  color: #4f5963;
+  font-size: 15px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  .pd-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .pd-left-inner {
+    padding: 24px;
+  }
+
+  .pd-img-frame {
+    min-height: 280px;
+  }
+
+  .pd-img-frame img {
+    max-height: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pd-wrap {
+    padding: 0 12px;
+  }
+
+  .pd-page {
+    padding: 20px 0 48px;
+  }
+
+  .pd-right {
+    padding: 28px 20px 28px;
+  }
+
+  .pd-name {
+    font-size: 22px;
+  }
+
+  .pd-price-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .pd-spec-row {
+    flex-direction: column;
+  }
+
+  .pd-spec-item {
+    border-right: none;
+    border-bottom: 1px solid #e4e4e4;
+  }
+
+  .pd-spec-item:last-child {
+    border-bottom: none;
+  }
+}

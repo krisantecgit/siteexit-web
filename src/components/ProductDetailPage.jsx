@@ -1,11 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FiCalendar, FiHeart, FiShoppingBag } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./productDetail.css";
 import FormModal from "../PopupModal/FormModal";
 import pm from "./images/products.webp";
 import axiosInstance from "../utils/axiosInstance";
+import { addToBuyCart, addToRentCart } from "../redux/cartSlice";
+import { toggleWishlistItem } from "../redux/wishlistSlice";
 
 const formatMoney = (value) => {
   const number = Number(value);
@@ -73,6 +77,7 @@ const normalizeVariantDetail = (variant, seoProduct = {}) => {
 };
 
 function ProductDetailPage({ productData = null }) {
+  const dispatch = useDispatch();
   const { productSlug } = useParams();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -89,6 +94,7 @@ function ProductDetailPage({ productData = null }) {
   const [selectedImage, setSelectedImage] = useState("");
   const [orderMode, setOrderMode] = useState("buy");
   const [rentStartDate, setRentStartDate] = useState("");
+  const wishlistItems = useSelector((store) => store.wishlist?.items || []);
 
   useEffect(() => {
     if (variantId) {
@@ -149,6 +155,22 @@ function ProductDetailPage({ productData = null }) {
   const originalSalePrice = product?.sale_offer_price ? formatMoney(product?.sale_price) : null;
   const rentPrice = formatMoney(product?.rental_price);
   const description = stripHtml(product?.description || "");
+  const isWishlisted = Boolean(product?.id && wishlistItems.some((item) => item.id === product.id));
+
+  const getCartProduct = () => ({
+    id: product?.id,
+    name: product?.name,
+    image: imageUrl,
+    slug: product?.slug || productSlug,
+    friendlyurl: product?.slug || productSlug,
+    type: orderMode,
+    offerPrice: orderMode === "buy"
+      ? Number(product?.sale_offer_price || product?.sale_price || 0)
+      : Number(product?.rental_price || 0),
+    sale_offer_price: product?.sale_offer_price,
+    sale_price: product?.sale_price,
+    rental_price: product?.rental_price,
+  });
 
   const handleQuote = () => {
     setSelectedProduct({
@@ -157,6 +179,28 @@ function ProductDetailPage({ productData = null }) {
       image: imageUrl,
     });
     setShow(true);
+  };
+
+  const handleAddToCart = () => {
+    const cartProduct = getCartProduct();
+
+    if (orderMode === "rent") {
+      dispatch(addToRentCart({
+        ...cartProduct,
+        fromDate: rentStartDate,
+        cartItemId: `${product?.id}-${rentStartDate || "rent"}`,
+      }));
+      toast.success("Added to rental cart");
+      return;
+    }
+
+    dispatch(addToBuyCart(cartProduct));
+    toast.success("Added to cart");
+  };
+
+  const handleToggleWishlist = () => {
+    dispatch(toggleWishlistItem(getCartProduct()));
+    toast.success(isWishlisted ? "Removed from wishlist" : "Saved to wishlist");
   };
 
   useEffect(() => {
@@ -218,9 +262,14 @@ function ProductDetailPage({ productData = null }) {
                   ))}
                 </div>
 
-                <button className="pd-wish-btn" type="button" aria-label="Wishlist">
+                <button
+                  className={`pd-wish-btn${isWishlisted ? " active" : ""}`}
+                  type="button"
+                  onClick={handleToggleWishlist}
+                  aria-label={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+                >
                   <FiHeart />
-                  <span>Save to wishlist</span>
+                  <span>{isWishlisted ? "Saved to wishlist" : "Save to wishlist"}</span>
                 </button>
               </div>
             </div>
@@ -243,10 +292,10 @@ function ProductDetailPage({ productData = null }) {
                   <span className="pd-spec-label">Category</span>
                   <span className="pd-spec-val">{product.subcategory_name?.[0] || "N/A"}</span>
                 </div>
-                <div className="pd-spec-item">
+                {/* <div className="pd-spec-item">
                   <span className="pd-spec-label">Unit</span>
                   <span className="pd-spec-val">{product.measurement_unit || "N/A"}</span>
-                </div>
+                </div> */}
               </div>
 
               {/* Mode selector */}
@@ -313,9 +362,14 @@ function ProductDetailPage({ productData = null }) {
 </div>
               </div>
 
-              <button className="pd-cta" type="button" onClick={handleQuote}>
-                Request a Quote
-              </button>
+              <div className="pd-actions">
+                <button className="pd-cart-cta" type="button" onClick={handleAddToCart}>
+                  Add to Cart
+                </button>
+                <button className="pd-cta" type="button" onClick={handleQuote}>
+                  Request a Quote
+                </button>
+              </div>
 
               {description && (
                 <div className="pd-desc">

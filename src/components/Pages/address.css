@@ -1,0 +1,472 @@
+.address-container {
+    margin: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 100px;
+}
+
+.select-address {
+    margin: 0px;
+    padding-bottom: 24px;
+    font-family: "Work Sans";
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.address-add-btn {
+    display: inline-flex;
+    background-color: transparent;
+    cursor: pointer;
+    font-family: "Work Sans", Recline;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #0f525b;
+    padding: 5px 15px;
+    border-width: 1px;
+    border-color: rgba(15, 82, 91, 0.5);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+.address-add-btn:hover {
+    background: #edf7f8;
+    border-color: #0f525b;
+}
+
+.address-saved {
+    padding-bottom: 12px;
+    font-family: "Work Sans";
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.address-add-new {
+    font-family: "Work Sans";
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.address-search-bar {
+    border-radius: 30px;
+    border: 1px solid #0f525b;
+    padding: 5px 20px;
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.address-search-bar input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 6px;
+    font-size: 14px;
+    width: 600px;
+}
+
+.address-search-icon {
+    float: right;
+}
+
+.suggestions-dropdown::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.suggestions-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 8px;
+}
+
+.suggestions-dropdown::-webkit-scrollbar-thumb {
+    background: #fff3e8;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    /* gives a small gap effect */
+    background-clip: padding-box;
+}
+
+
+
+
+.map-suggestion {
+    height: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-bottom: 1px solid rgb(232, 232, 232);
+    padding: 24px;
+    cursor: pointer;
+
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.map-alt {
+    color: #6BAFC8;
+}
+
+.address-right {
+    border-left: 1px solid #BCBCBC;
+    padding-left: 50px;
+}
+
+.delivery-estimate-title {
+    margin: 0;
+    font-family: "Work Sans", Recline;
+    font-weight: 400;
+    font-size: 0.8571428571428571rem;
+    line-height: 1.5;
+    font-family: Work Sans !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px;
+}
+
+.address-delivery-estimate-time {
+    padding: 24px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 8px 16px rgba(34, 34, 34, 0.1);
+    border: 1px solid #BCBCBC;
+    border-radius: 8px;
+}
+
+.address-delivery-estimate-time div {
+    margin: 0px 0px 0px 8px;
+    color: rgb(153, 153, 153);
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.address-search-bar {
+    position: relative;
+    width: 100%;
+}
+
+.suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+.suggestion-item:hover {
+    background: #f8f9fa;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.address-confirm-title {
+    font-family: "Work Sans";
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.map-view {
+    width: 700px;
+    height: 400px;
+    margin-top: 20px;
+    border-radius: 17px;
+}
+
+.selected-address {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: "Work Sans", Recline;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.address-confirm-btn {
+    display: inline-flex;
+    background-color: transparent;
+    gap: 10px;
+    cursor: pointer;
+    font-family: "Work Sans", Recline;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #0f525b;
+    padding: 5px 15px;
+    border-width: 1px;
+    border-color: rgba(15, 82, 91, 0.5);
+    border-radius: 6px;
+    margin-top: 20px;
+    transition: all 0.2s ease;
+}
+.address-confirm-btn:hover {
+    background: #edf7f8;
+    border-color: #0f525b;
+}
+
+
+
+
+.area-details {
+    margin: 0px;
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 400;
+    max-width: 540px;
+    line-height: 1.3;
+}
+
+.selected-address-box {
+    padding: 24px;
+    background: linear-gradient(0deg, #fff 0%, #f3f3f3 100%);
+    border-radius: 16px;
+    border: 1px solid #e8e8e8;
+    margin-top: 12px;
+    width: 650px;
+}
+
+.address-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.area-name {
+    margin: 0px 0px 0px 10px;
+    font-family: "Work Sans";
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.area-details {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.address-form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.input-double {
+    display: flex;
+    gap: 20px;
+}
+
+.input-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-field label {
+    color: rgb(85, 85, 85);
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.input-box-address {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    background-color: #f6f6f6;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.input-box-address::placeholder {
+    color: #9a9a9a;
+    text-transform: capitalize;
+}
+
+.input-box-address:focus {
+    border-color: #0f525b;
+    background-color: #fff;
+}
+
+.tabs-address {
+    display: flex;
+    gap: 10px;
+}
+
+.label-title label {
+    color: rgb(85, 85, 85);
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.tabs-address button {
+    padding: 8px 25px !important;
+    color: rgba(0, 0, 0, 0.87);
+    border: 1px solid #222222;
+    border-radius: 5px;
+    background: none;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.sup-color {
+    color: red;
+}
+
+.map-alt {
+    color: #0f525b;
+    font-size: 18px;
+    margin-right: 4px;
+}
+
+.address-proceed-btn {
+    background-color: #fff;
+    font-family: "Work Sans", Recline;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #0f525b;
+    padding: 5px 15px;
+    border-width: 1px;
+    border-color: rgba(15, 82, 91, 0.5);
+    border-radius: 6px;
+    margin-top: 20px;
+    transition: all 0.2s ease;
+}
+.address-proceed-btn:hover {
+    background: #edf7f8;
+    border-color: #0f525b;
+}
+.spinner-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-left: -60px;
+    overflow-y: auto;
+    margin-top: -60px;
+}
+
+.address-box {
+    color: rgba(0, 0, 0, 0.87);
+    border: 1px solid #ddd; /* 👈 add border */
+    border-radius: 6px; /* slightly sharper than 8px */
+    box-shadow: none; /* 👈 remove shadow */
+    transition: all 0.2s ease;
+    background: white;
+    padding: 15px 20px;
+    width: 700px;
+    cursor: pointer;
+}
+
+.address-box.active {
+    border: 1px solid #0f525b; /* 👈 highlight selected */
+    background: #edf7f8; /* subtle instead of gradient */
+}
+
+.checked {
+    color: #0f525b;
+    font-weight: bold;
+}
+
+.address-box-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.user-name {
+    font-family: "Work Sans";
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.user-city {
+    padding-bottom: 8px;
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.user-address {
+    padding-bottom: 12px;
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.default-badge {
+    margin-left: 8px;
+    font-family: "Work Sans";
+    font-size: 10px;
+    font-weight: 400;
+    background: rgb(249, 249, 249);
+    border-radius: 8px;
+    padding: 2px 7px;
+}
+
+.user-mob-no {
+    font-family: "Work Sans";
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.user-mob {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.address-card-proceed-btn {
+  display: inline-flex;
+  margin-top: 0;
+  flex-shrink: 0;
+  transition: all 0.2s ease; /* ✅ fixed */
+}
+
+.address-proceed-btn:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.address-select-field {
+  height: 36px;       
+  padding: 4px 10px;    
+  font-size: 14px;
+}

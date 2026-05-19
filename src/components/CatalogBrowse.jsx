@@ -1,11 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { FiShoppingCart } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./catalogBrowse.css";
 import pm from "./images/products.webp";
 import "bootstrap/dist/css/bootstrap.min.css";
 import FormModal from "../PopupModal/FormModal";
 import axiosInstance from "../utils/axiosInstance";
 import { CATALOG_MODES, STORE_ID } from "../constants/catalog";
+import FilterSection from "./Filtersection";
+import { addToBuyCart, addToRentCart } from "../redux/cartSlice";
+import ProductCard, { getProductImage } from "./ProductCard";
 
 const priceRanges = [
   { label: "All Prices", min: "", max: "" },
@@ -14,96 +20,37 @@ const priceRanges = [
   { label: "Above Rs. 10,000", min: "10000", max: "" },
 ];
 
-function CatalogBrowse({ mode = "buy", categorySlugOverride = "" }) {
+function CatalogBrowse({ mode = "buy" }) {
+  const dispatch = useDispatch();
   const config = CATALOG_MODES[mode] || CATALOG_MODES.buy;
-  const { categorySlug: routeCategorySlug } = useParams();
-  const categorySlug = categorySlugOverride || routeCategorySlug;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const categoryScrollerRef = useRef(null);
+  const loadMoreRef = useRef(null);
 
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(null);
   const [activeSubcategory, setActiveSubcategory] = useState("");
   const [priceRange, setPriceRange] = useState(priceRanges[0]);
+  const [activeSort, setActiveSort] = useState("featured");
+  const [selectedOptionNames, setSelectedOptionNames] = useState("");
   const [show, setShow] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [loadingMoreProducts, setLoadingMoreProducts] = useState(false);
   const [nextProductsUrl, setNextProductsUrl] = useState(null);
   const [error, setError] = useState(null);
-  const loadMoreRef = useRef(null);
 
-  const isCategorySelected = Boolean(categorySlug && activeCategory);
   const search = searchParams.get("q") || searchParams.get("search") || "";
 
   useEffect(() => {
-    setLoadingCategories(true);
-    setError(null);
-    setCategories([]);
-    setActiveCategory(null);
-    setSubcategories([]);
-    setProducts([]);
-    setNextProductsUrl(null);
     setActiveSubcategory("");
-
-    axiosInstance
-      .get(config.categoriesEndpoint, {
-        params: { is_suspended: false, store_id: STORE_ID },
-      })
-      .then((res) => {
-        const data = res.data?.results ?? res.data;
-        const nextCategories = Array.isArray(data) ? data : [];
-        setCategories(nextCategories);
-
-        if (categorySlug) {
-          const matched =
-            nextCategories.find((category) => category.slug === categorySlug) ||
-            nextCategories.find((category) => String(category.id) === categorySlug);
-          setActiveCategory(matched || null);
-        }
-      })
-      .catch(() => {
-        setError("Failed to load categories. Please try again.");
-        setCategories([]);
-      })
-      .finally(() => setLoadingCategories(false));
-  }, [config.categoriesEndpoint, categorySlug, mode]);
-
-  useEffect(() => {
-    if (!activeCategory?.id) {
-      setSubcategories([]);
-      return;
-    }
-
-    setActiveSubcategory("");
-    axiosInstance
-      .get("catlog/sub-categories/", {
-        params: {
-          category: activeCategory.id,
-          is_suspended: false,
-          store_id: STORE_ID,
-        },
-      })
-      .then((res) => {
-        const data = res.data?.results ?? res.data;
-        setSubcategories(Array.isArray(data) ? data : []);
-      })
-      .catch(() => setSubcategories([]));
-  }, [activeCategory?.id]);
+    setSelectedOptionNames("");
+  }, [mode]);
 
   const fetchProductsPage = useCallback(
     (nextUrl = null) => {
-      if (!activeCategory?.name || !categorySlug) {
-        setProducts([]);
-        setNextProductsUrl(null);
-        return;
-      }
-
       const isNextPage = Boolean(nextUrl);
+
       if (isNextPage) {
         setLoadingMoreProducts(true);
       } else {
@@ -115,19 +62,24 @@ function CatalogBrowse({ mode = "buy", categorySlugOverride = "" }) {
       setError(null);
 
       axiosInstance
-        .get(nextUrl || "catlog/category-variants/", nextUrl ? undefined : {
-        params: {
-          search,
-          category: activeCategory.name,
-          subcategory: activeSubcategory,
-          price_min: priceRange.min,
-          price_max: priceRange.max,
-          options: "",
-          store_id: STORE_ID,
-          listing_type: config.listingType,
-          is_suspended: false,
-        },
-      })
+        .get(
+          nextUrl || "catlog/category-variants/",
+          nextUrl
+            ? undefined
+            : {
+                params: {
+                  search,
+                  subcategory: activeSubcategory,
+                  price_min: priceRange.min,
+                  price_max: priceRange.max,
+                  options: selectedOptionNames,
+                  store_id: STORE_ID,
+                  listing_type: config.listingType,
+                  is_suspended: false,
+                  ...(activeSort !== "featured" ? { sortBy: activeSort } : {}),
+                },
+              }
+        )
         .then((res) => {
           const data = res.data?.results ?? res.data;
           const nextProducts = Array.isArray(data) ? data : [];
@@ -157,13 +109,13 @@ function CatalogBrowse({ mode = "buy", categorySlugOverride = "" }) {
         });
     },
     [
-      activeCategory?.name,
       activeSubcategory,
-      categorySlug,
+      activeSort,
       config.listingType,
       priceRange.max,
       priceRange.min,
       search,
+      selectedOptionNames,
     ]
   );
 
@@ -191,41 +143,42 @@ function CatalogBrowse({ mode = "buy", categorySlugOverride = "" }) {
     return () => observer.disconnect();
   }, [fetchProductsPage, loadingMoreProducts, loadingProducts, nextProductsUrl]);
 
-  const getProductImage = (product) =>
-    product.images?.[0]?.image?.image || product.product?.image?.image || pm;
 
-  const getPrice = (product) => {
-    const offerPrice = product.prices?.sale_offer_price;
-    const salePrice = product.prices?.sale_price;
-    const rentalPrice = product.prices?.rental_price;
 
-    if (mode === "rent" && rentalPrice) {
-      return `Rs. ${rentalPrice.toLocaleString("en-IN")} / day`;
+  const getCartProduct = (product) => ({
+    id: product.id,
+    name: product.name,
+    image: getProductImage(product),
+    slug: product.slug || product.product?.slug,
+    friendlyurl: product.slug || product.product?.slug,
+    type: mode === "rent" ? "rent" : "buy",
+    offerPrice:
+      mode === "rent"
+        ? Number(product.prices?.rental_price || 0)
+        : Number(product.prices?.sale_offer_price || product.prices?.sale_price || 0),
+    sale_offer_price: product.prices?.sale_offer_price,
+    sale_price: product.prices?.sale_price,
+    rental_price: product.prices?.rental_price,
+  });
+
+  const handleAddToCart = (event, product) => {
+    event.stopPropagation();
+    const cartProduct = getCartProduct(product);
+
+    if (mode === "rent") {
+      axiosInstance.get(`catlog/variant-price-packages/?product_variant=${product.id}&active=true`).catch(() => {});
+      axiosInstance.get(`sitedata/site/`).catch(() => {});
+      
+      dispatch(addToRentCart({
+        ...cartProduct,
+        cartItemId: `${product.id}-rent`,
+      }));
+      toast.success("Added to rental cart");
+      return;
     }
 
-    if (offerPrice) {
-      return `Rs. ${offerPrice.toLocaleString("en-IN")}`;
-    }
-
-    if (salePrice) {
-      return `Rs. ${salePrice.toLocaleString("en-IN")}`;
-    }
-
-    return "Quote on request";
-  };
-
-  const selectCategory = (category) => {
-    navigate({
-      pathname: `/${config.path}/${category.slug}`,
-      search: searchParams.toString(),
-    });
-  };
-
-  const scrollCategories = (direction) => {
-    categoryScrollerRef.current?.scrollBy({
-      left: direction * 320,
-      behavior: "smooth",
-    });
+    dispatch(addToBuyCart(cartProduct));
+    toast.success("Added to cart");
   };
 
   const openProduct = (product) => {
@@ -247,228 +200,59 @@ function CatalogBrowse({ mode = "buy", categorySlugOverride = "" }) {
     setShow(true);
   };
 
-  const renderCategoryCarousel = (showImages = false) => (
-    <div className={`cb-swiper-wrap${showImages ? " cb-image-swiper-wrap" : ""}`}>
-      <button
-        className="cb-swiper-arrow"
-        type="button"
-        onClick={() => scrollCategories(-1)}
-        aria-label="Previous categories"
-      >
-        {"<"}
-      </button>
-      <div className={`cb-swiper${showImages ? " cb-image-swiper" : ""}`} ref={categoryScrollerRef}>
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            type="button"
-            className={
-              showImages
-                ? "cb-image-cat"
-                : `cb-cat-tab${activeCategory?.id === category.id ? " active" : ""}`
-            }
-            onClick={() => selectCategory(category)}
-          >
-            {showImages ? (
-              <>
-                <span className="cb-image-cat-media">
-                  <img
-                    src={category.image?.image || pm}
-                    alt=""
-                    onError={(event) => { event.target.src = pm; }}
-                  />
-                </span>
-                <span className="cb-image-cat-label">{category.name}</span>
-              </>
-            ) : (
-              <>
-                {activeCategory?.id === category.id && (
-                  <span className="cb-tab-check" aria-hidden="true">✓</span>
-                )}
-                {category.name}
-              </>
-            )}
-          </button>
-        ))}
-      </div>
-      <button
-        className="cb-swiper-arrow"
-        type="button"
-        onClick={() => scrollCategories(1)}
-        aria-label="Next categories"
-      >
-        {">"}
-      </button>
-    </div>
-  );
-
   return (
     <section className="cb-root">
       <div className="cb-container">
-        {loadingCategories && (
+        {/* <div className="cb-page-heading">
+          <h1 className="cb-landing-title">{config.pageTitle}</h1>
+        </div> */}
+
+        <FilterSection
+          activeSubcategory={activeSubcategory}
+          activeSort={activeSort}
+          onSubcategoryChange={setActiveSubcategory}
+          onPriceRangeChange={setPriceRange}
+          onSortChange={setActiveSort}
+          onOptionsChange={setSelectedOptionNames}
+          priceRange={priceRange}
+          priceRanges={priceRanges}
+          scrollerRef={categoryScrollerRef}
+          showCategories={false}
+          showSubcategories={false}
+        />
+
+        {error && <div className="cb-alert">{error}</div>}
+
+        {loadingProducts && (
           <div className="cb-loading">
             <span className="cb-spinner" />
           </div>
         )}
 
-        {!loadingCategories && error && !isCategorySelected && (
-          <div className="cb-alert">{error}</div>
-        )}
-
-        {!loadingCategories && !categorySlug && (
-          <div className="cb-landing">
-            <h1 className="cb-landing-title">
-              {mode === "rent" ? "Rent Equipment" : "Sale Equipment"}
-            </h1>
-            {renderCategoryCarousel(true)}
-            {categories.length === 0 && !error && (
-              <div className="cb-empty"><p>No categories available.</p></div>
-            )}
-          </div>
-        )}
-
-        {!loadingCategories && categorySlug && !activeCategory && (
-          <div className="cb-empty">
-            <p>Category not found.</p>
-            <button
-              type="button"
-              className="cb-btn-outline"
-              onClick={() => navigate(`/${config.path}`)}
-            >
-              View all categories
-            </button>
-          </div>
-        )}
-
-        {!loadingCategories && isCategorySelected && (
+        {!loadingProducts && !error && (
           <>
-            {renderCategoryCarousel()}
-
-            <div className="cb-filter-bar">
-              <span className="cb-filter-label">Filter</span>
-
-              <div className="cb-selects">
-                <div className="cb-select-wrap">
-                  <select
-                    value={activeSubcategory}
-                    onChange={(event) => setActiveSubcategory(event.target.value)}
-                  >
-                    <option value="">Sub-Category</option>
-                    {subcategories.map((subcategory) => (
-                      <option key={subcategory.id} value={subcategory.name}>
-                        {subcategory.name}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="cb-select-arrow">v</span>
+            <div className="cb-grid">
+              {products.length > 0 ? (
+                products.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    mode={mode}
+                    onOpen={openProduct}
+                    onAdd={handleAddToCart}
+                    onEnquire={handleEnquire}
+                  />
+                ))
+              ) : (
+                <div className="cb-empty cb-grid-empty">
+                  <p>No products found for this selection.</p>
                 </div>
-
-                <div className="cb-select-wrap">
-                  <select
-                    value={priceRange.label}
-                    onChange={(event) =>
-                      setPriceRange(
-                        priceRanges.find((range) => range.label === event.target.value) ||
-                          priceRanges[0]
-                      )
-                    }
-                  >
-                    {priceRanges.map((range) => (
-                      <option key={range.label} value={range.label}>
-                        {range.label}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="cb-select-arrow">v</span>
-                </div>
-
-                <div className="cb-select-wrap">
-                  <select defaultValue="">
-                    <option value="">More Options</option>
-                  </select>
-                  <span className="cb-select-arrow">v</span>
-                </div>
-              </div>
-
-              <div className="cb-sort">
-                <span>Sort by</span>
-                <div className="cb-select-wrap">
-                  <select defaultValue="featured">
-                    <option value="featured">Featured</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                  </select>
-                  <span className="cb-select-arrow">v</span>
-                </div>
-              </div>
+              )}
             </div>
 
-            {error && <div className="cb-alert">{error}</div>}
-
-            {loadingProducts && (
-              <div className="cb-loading">
-                <span className="cb-spinner" />
-              </div>
-            )}
-
-            {!loadingProducts && !error && (
-              <>
-                <div className="cb-grid">
-                  {products.length > 0 ? (
-                    products.map((product) => (
-                      <article
-                        key={product.id}
-                        className="cb-card"
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => openProduct(product)}
-                        onKeyDown={(event) => {
-                          if (event.key === "Enter") {
-                            openProduct(product);
-                          }
-                        }}
-                      >
-                        <div className="cb-card-img">
-                          <img
-                            src={getProductImage(product)}
-                            alt=""
-                            onError={(event) => { event.target.src = pm; }}
-                          />
-                        </div>
-
-                        <div className="cb-card-body">
-                          <h3 className="cb-card-name">{product.name}</h3>
-                          {product.sku_code && (
-                            <p className="cb-card-sku">SKU: {product.sku_code}</p>
-                          )}
-                          <div className="cb-card-footer">
-                            <span className="cb-card-price">{getPrice(product)}</span>
-                            <button
-                              type="button"
-                              className="cb-btn-primary"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                handleEnquire(product);
-                              }}
-                            >
-                              Request Quote
-                            </button>
-                          </div>
-                        </div>
-                      </article>
-                    ))
-                  ) : (
-                    <div className="cb-empty cb-grid-empty">
-                      <p>No products found for this selection.</p>
-                    </div>
-                  )}
-                </div>
-
-                <div ref={loadMoreRef} className="cb-load-more-sentinel">
-                  {loadingMoreProducts && <span className="cb-spinner" />}
-                </div>
-              </>
-            )}
+            <div ref={loadMoreRef} className="cb-load-more-sentinel">
+              {loadingMoreProducts && <span className="cb-spinner" />}
+            </div>
           </>
         )}
       </div>

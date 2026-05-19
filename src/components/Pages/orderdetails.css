@@ -1,0 +1,280 @@
+.order-details-wrapper {
+  padding: 20px;
+  background: #fff;
+}
+
+.order-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 6px 14px;
+  border: 1px solid rgba(15, 82, 91, 0.35);
+  border-radius: 6px;
+  background: #edf7f8;
+  color: #0f525b;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.order-back-button:hover {
+  background: #0f525b;
+  color: #fff;
+}
+
+.order-details-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.order-summary-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.order-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 16px 0;
+}
+
+.left {
+  display: flex;
+  gap: 12px;
+}
+
+.left img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.info .name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.info .qty {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.right {
+  text-align: right;
+}
+
+.order-id {
+  font-size: 12px;
+  color: #6b6b6b;
+  margin-bottom: 6px;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.invoice-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.invoice-status-badge.rejected {
+  background: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fecdd3;
+}
+
+.breakup-background2 {
+  background-color: rgb(249, 249, 249);
+  padding: 20px 10px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.price-breakup-section {
+  display: grid;
+  gap: 20px;
+}
+
+.data-container-parent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.data-container {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.break-header h4 {
+  margin: 0 0 14px;
+}
+
+.break-item-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.breakup-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eceff3;
+}
+
+.breakup-item:last-child {
+  border-bottom: none;
+}
+
+.breakup-item > div:first-child {
+  flex: 1;
+  min-width: 0;
+  color: #4b5563;
+}
+
+.breakup-item > div:last-child {
+  flex: 0 0 auto;
+  max-width: 45%;
+  text-align: right;
+  font-weight: 600;
+  color: #111827;
+  word-break: break-word;
+}
+
+.discount-green {
+  margin-top: 10px;
+  color: #198754;
+  font-weight: 600;
+  text-align: right;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.delivery-address-card {
+  margin-top: 20px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 18px 22px;
+  background: #ffffff;
+  margin-bottom: 24px;
+}
+
+.delivery-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.address-icon {
+  font-size: 20px;
+}
+
+.delivery-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+}
+
+.delivery-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.address-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.label {
+  color: #555;
+  min-width: 110px;
+}
+
+.value {
+  color: #222;
+  flex: 1;
+}
+
+.modern-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(15, 82, 91, 0.1);
+  border-radius: 50%;
+  border-top-color: #0f525b;
+  animation: spin 0.8s ease-in-out infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .order-details-topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .breakup-item {
+    gap: 10px;
+  }
+
+  .breakup-item > div:last-child {
+    max-width: 50%;
+  }
+
+  .delivery-address-card {
+    padding: 14px;
+  }
+
+  .delivery-title {
+    font-size: 16px;
+  }
+
+  .address-row {
+    font-size: 13px;
+  }
+}

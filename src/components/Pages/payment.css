@@ -1,0 +1,739 @@
+/* Global styling and container */
+.payment-page-wrapper {
+  background-color: #f6f9fb;
+  min-height: 100vh;
+  padding-bottom: 80px;
+  font-family: "Work Sans", "Inter", sans-serif;
+  color: #1e293b;
+}
+
+/* Spinner and loading states */
+.payment-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 15px;
+}
+
+.payment-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(6, 155, 170, 0.1);
+  border-left-color: rgb(6, 155, 170);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Layout layout container */
+.payment-layout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 20px 24px;
+}
+
+/* Header section */
+.payment-title-header {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.payment-title-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f525b;
+  margin-bottom: 6px;
+}
+
+.payment-title-header .subtitle {
+  font-size: 15px;
+  color: #64748b;
+}
+
+/* Main Grid Layout */
+.payment-main-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Common cards standard style */
+.payment-methods-card, .payment-summary-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px -10px rgba(15, 82, 91, 0.08);
+  border: 1px solid rgba(15, 82, 91, 0.05);
+  overflow: hidden;
+}
+
+/* Payment Mode Tabs */
+.payment-methods-tabs {
+  display: flex;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  outline: none;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: rgb(6, 155, 170);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tab-btn.active {
+  background-color: #ffffff;
+}
+
+.tab-btn.active::after {
+  transform: scaleX(1);
+}
+
+.tab-icon {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.tab-btn.active .tab-icon {
+  color: rgb(6, 155, 170);
+}
+
+.tab-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-label strong {
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+  transition: color 0.3s ease;
+}
+
+.tab-btn.active .tab-label strong {
+  color: #0f525b;
+}
+
+.tab-label span {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Panel content */
+.payment-tab-content {
+  padding: 30px;
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cash on Delivery Panel */
+.info-alert {
+  display: flex;
+  gap: 16px;
+  background-color: #edf7f8;
+  border-left: 4px solid rgb(6, 155, 170);
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.alert-icon {
+  font-size: 22px;
+  color: rgb(6, 155, 170);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alert-text h5 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f525b;
+  margin-bottom: 4px;
+}
+
+.alert-text p {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cod-details-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.cod-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.cod-icon {
+  font-size: 20px;
+  color: #475569;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cod-row h6 {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 3px;
+}
+
+.cod-row span {
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+/* Action Area Button */
+.payment-action-area {
+  margin-top: 15px;
+}
+
+.btn-pay-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 28px;
+  border-radius: 50px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(6, 155, 170, 0.15);
+}
+
+.cod-btn {
+  background-color: rgb(6, 155, 170);
+  color: #ffffff;
+}
+
+.cod-btn:hover {
+  background-color: #0f525b;
+  box-shadow: 0 6px 20px rgba(15, 82, 91, 0.3);
+  transform: translateY(-2px);
+}
+
+.cod-btn:active {
+  transform: translateY(0);
+}
+
+.price-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+/* Spinner inside button */
+.btn-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-left-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Online Card Payment Panel */
+.card-preview-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  perspective: 1000px;
+}
+
+/* 3D Flipping Mock Card */
+.mock-card {
+  width: 340px;
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(15, 82, 91, 0.25);
+}
+
+.mock-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+.card-face.front {
+  background: linear-gradient(135deg, #0f525b 0%, #157e8c 50%, #069baa 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.card-gloss-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+  z-index: 1;
+}
+
+.card-brand {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.card-chip {
+  width: 40px;
+  height: 30px;
+  background: linear-gradient(135deg, #f2c94c 0%, #f2994a 100%);
+  border-radius: 6px;
+  position: relative;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.card-number-display {
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  word-spacing: 4px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  margin-top: 15px;
+  font-family: monospace;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.card-lbl {
+  font-size: 8px;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.card-val {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+
+/* Card Back Face */
+.card-face.back {
+  background: linear-gradient(135deg, #09373d 0%, #0f525b 100%);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.card-strip {
+  height: 40px;
+  background-color: #0b1516;
+  width: 100%;
+}
+
+.card-cvv-box {
+  width: 85%;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.card-cvv-box .card-lbl {
+  margin-right: 10px;
+}
+
+.cvv-display {
+  background-color: #ffffff;
+  color: #1e293b;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-family: monospace;
+}
+
+.card-signature {
+  font-size: 9px;
+  letter-spacing: 1px;
+  opacity: 0.5;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Form Styles */
+.card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: #64748b;
+  font-size: 18px;
+}
+
+.card-form input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14.5px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.input-with-icon input {
+  padding-left: 44px;
+}
+
+.card-form input:focus {
+  border-color: rgb(6, 155, 170);
+  box-shadow: 0 0 0 3px rgba(6, 155, 170, 0.15);
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Online Pay Button styling */
+.online-btn {
+  background-color: #0f525b;
+  color: #ffffff;
+}
+
+.online-btn:hover {
+  background-color: rgb(6, 155, 170);
+  box-shadow: 0 6px 20px rgba(6, 155, 170, 0.3);
+  transform: translateY(-2px);
+}
+
+.lock-icon {
+  font-size: 14px;
+}
+
+/* Sidebar Order Summary */
+.payment-summary-card {
+  padding: 30px;
+  text-align: left;
+}
+
+.summary-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.summary-dollar-icon {
+  font-size: 24px;
+  color: rgb(6, 155, 170);
+}
+
+.summary-title h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f525b;
+  margin: 0;
+}
+
+.order-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.summary-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-lbl {
+  font-size: 13.5px;
+  color: #64748b;
+}
+
+.info-val {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.info-val.highlight {
+  color: rgb(6, 155, 170);
+  background-color: #edf7f8;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.badge-status {
+  font-size: 11.5px;
+  background-color: #fef3c7;
+  color: #d97706;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 10px 0;
+}
+
+.summary-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14.5px;
+  color: #475569;
+}
+
+.summary-price-row strong {
+  color: #1e293b;
+}
+
+.summary-price-row.discount {
+  color: #16a34a;
+}
+
+.summary-price-row.discount strong {
+  color: #16a34a;
+}
+
+.free-shipping {
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 1px;
+}
+
+.summary-price-row.total {
+  font-size: 18px;
+  color: #0f525b;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.total-val {
+  font-size: 20px;
+  color: #0f525b;
+  font-weight: 800;
+}
+
+.savings-alert-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #eafaf1;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  color: #155724;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.savings-icon {
+  font-size: 18px;
+  color: #28a745;
+  flex-shrink: 0;
+}
+
+.security-guarantee-box {
+  display: flex;
+  gap: 14px;
+  margin-top: 30px;
+  background-color: #f8fafc;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.guarantee-icon {
+  font-size: 22px;
+  color: #64748b;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.security-guarantee-box h6 {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.security-guarantee-box p {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Mobile Responsive adjustment */
+@media (max-width: 900px) {
+  .payment-layout-container {
+    padding-top: 100px;
+  }
+  
+  .payment-main-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .payment-summary-card {
+    order: -1; /* Display summary first on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-layout-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .payment-title-header h1 {
+    font-size: 24px;
+  }
+  
+  .payment-tab-content {
+    padding: 20px 16px;
+  }
+  
+  .payment-methods-tabs {
+    flex-direction: column;
+  }
+  
+  .tab-btn {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .tab-btn::after {
+    display: none; /* Hide the bar underline on mobile stacked tabs */
+  }
+  
+  .tab-btn.active {
+    border-left: 4px solid rgb(6, 155, 170);
+  }
+  
+  .mock-card {
+    width: 100%;
+    max-width: 320px;
+    height: 180px;
+  }
+  
+  .card-number-display {
+    font-size: 16px;
+  }
+}

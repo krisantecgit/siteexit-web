@@ -1,0 +1,59 @@
+.checkout-header {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  background: linear-gradient(180deg, #F3F3F3 0%, #FFFFFF 99.38%);
+  font-family: Arial, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 18px 60px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+}
+
+.logo img {
+  height: 35px;
+  cursor: pointer;
+}
+
+.checkout-steps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: auto;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #777; /* default gray */
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.step-icon {
+  font-size: 18px;
+  margin-bottom: 2px;
+  color: inherit; /* ensure it takes the same color as .step */
+  transition: color 0.3s ease;
+}
+
+/* ACTIVE STEP */
+.step.active {
+  color: #0097A7 !important; /* teal color */
+  font-weight: 600;
+}
+
+.step.active .step-icon {
+  color: #0097A7 !important;
+}
+
+.dashed-line {
+  width: 60px;
+  height: 30px;
+  border-top: 1px dashed #1a1818;
+  /* margin-bottom: 30px; */
+}

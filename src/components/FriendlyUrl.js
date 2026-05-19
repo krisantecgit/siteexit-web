@@ -59,7 +59,6 @@ const FriendlyUrlComponent = () => {
     );
   }
 
-  const categorySlug = data?.slug || data?.friendly_url || friendlyurl;
   const promotionalProducts = Array.isArray(data?.results)
     ? data.results
     : Array.isArray(data)
@@ -73,7 +72,7 @@ const FriendlyUrlComponent = () => {
       )}
 
       {type === "category" && (
-        <CatalogBrowse mode="buy" categorySlugOverride={categorySlug} />
+        <CatalogBrowse mode="buy" />
       )}
 
       {type === "promotionalcategory" && (

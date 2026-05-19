@@ -1,0 +1,352 @@
+* {
+    font-family: "Work Sans";
+}
+
+.product-details {
+    display: flex;
+    gap: 24px;
+    padding: 10px 60px;
+    margin-top: 100px;
+    max-width: 1250px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: flex-start;
+}
+
+.product-left {
+    position: relative;
+    width: calc(100% - 424px);
+    min-width: 0;
+}
+
+.image-slider {
+    display: flex;
+    position: relative;
+    gap: 5px;
+    width: 100%;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-image-wrapper {
+    flex: 1;
+    height: 100%;
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.search-plus {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    cursor: pointer;
+    color: #6BAFC8;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 26px;
+}
+
+.product-name {
+    font-family: "Work Sans", sans-serif;
+    color: rgb(34, 34, 34);
+    font-size: 18px;
+    font-weight: 500;
+    width: 95%;
+    margin: 40px 0 16px;
+}
+
+.zoom-container {
+    position: relative;
+}
+
+/* ------------------------------------------------------ */
+/* 🔥 FIXED ZOOM PREVIEW — NO BLINK, NO DISPLAY NONE/BLOCK */
+/* ------------------------------------------------------ */
+
+.zoom-preview {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: auto;
+    padding: 20px;
+    text-align: center;
+    z-index: 9999;
+
+    /* FIX BLINK */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease-in-out;
+    pointer-events: none;
+}
+
+.zoom-container:hover .zoom-preview {
+    opacity: 1;
+    visibility: visible;
+}
+
+.zoom-preview img {
+    max-width: 80%;
+    border: 1px solid #c4bfbf;
+    height: 480px;
+}
+
+/* ------------------------------------------------------ */
+
+.arrow {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    background: white;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 10;
+    border: none;
+}
+
+.arrow.left {
+    left: 10px;
+    color: #6BAFC8;
+}
+
+.arrow.right {
+    right: 10px;
+    color: #6BAFC8;
+}
+
+.thumbnail-section {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.thumbnail {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    object-fit: cover;
+    transition: border 0.2s ease;
+}
+
+.thumbnail.active {
+    border: 1px solid #6BAFC8;
+}
+
+.product-right-column {
+    width: 400px;
+    flex: 0 0 400px;
+    align-self: flex-start;
+    position: sticky;
+    top: 120px;
+}
+
+.product-right {
+    width: 100%;
+    padding: 32px;
+    min-height: 400px;
+    height: max-content;
+    overflow: visible;
+    align-self: flex-start;
+    border-radius: 12px;
+}
+
+.product-right.buy-bg {
+    background-color: rgb(238, 241, 250);
+}
+
+.product-right.rent-bg {
+    background-color: rgb(238, 241, 250);
+}
+
+/* Variant Options Styles */
+.variant-options-container {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.variant-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+}
+
+.variant-option-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.variant-type-label {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.variant-option-value {
+    font-size: 14px;
+    color: #222;
+    font-weight: 500;
+}
+
+.single-option {
+    color: rgb(34, 34, 34);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Work Sans", sans-serif;
+}
+
+.product-right-listingtype {
+    text-transform: uppercase;
+    font-family: "Work Sans", sans-serif;
+    color: #999999;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-right-title {
+    font-size: 24px;
+    font-family: 'Recline', sans-serif;
+    width: 90%;
+}
+
+.product-description-section {
+    margin-top: 8px;
+}
+
+.product-description {
+    color: #444;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.product-description.collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-description.expanded {
+    display: block;
+}
+
+.product-description-toggle {
+    margin-top: 12px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: rgb(6, 155, 170);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.product-old-price-right {
+    color: rgb(119, 119, 119);
+    font-size: 12px;
+    font-weight: 400;
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
+.product-discount-right {
+    color: rgb(34, 34, 34);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.radio-group>div+div {
+    margin-top: 20px;
+    border-top: 1px solid #909090;
+    border-bottom: 1px solid #909090;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.radio-group>div+div:hover {
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(114, 113, 113, 0.1);
+}
+
+.cart-btn {
+    display: flex;
+    justify-content: space-between;
+    background: rgb(6, 155, 170);
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    border-radius: 25px;
+    padding: 12px 24px;
+    cursor: pointer;
+    border: 1px solid rgb(6, 155, 170);
+    transition: all 0.3s ease;
+}
+
+.cart-btn:hover {
+    background-color: white;
+    border: 1px solid rgb(6, 155, 170);
+    color: black;
+}
+
+.rent-date-section {
+    margin-top: 10px;
+}
+
+.date-picker-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.date-field label {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.custom-date-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #deecf1;
+    outline: none;
+    cursor: pointer;
+}
+
+.react-datepicker-popper {
+    z-index: 1000 !important;
+}

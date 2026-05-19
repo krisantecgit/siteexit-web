@@ -1,0 +1,212 @@
+.order-overflow {
+    /* border-left: 1px solid #eee; */
+    overflow-y: scroll;
+    height: 80vh;
+}
+
+.sticky-container {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 0px 30px;
+    background: white;
+}
+
+.order-history {
+    font-size: 25px;
+    font-weight: 500;
+    padding: 15px;
+    background-color: #F8F8F8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loader-container {
+    text-align: center;
+}
+
+.loader-container img {
+    width: 200px;
+    padding-top: 60px;
+}
+
+.order {
+    margin: 2rem 30px;
+    font-family: "Work Sans";
+    padding: 0 10px;
+    margin-top: 30px !important;
+}
+.no-orders {
+    margin-top: 30px;
+}
+.order-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.order-data {
+     display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.order_id {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.image {
+    max-width: 26px;
+}
+.order-overflow {
+    /* border-left: 1px solid #eee; */
+    overflow-y: scroll;
+    height: 80vh;
+}
+
+.sticky-container {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 0px 30px;
+    background: white;
+}
+
+.order-history {
+    font-size: 25px;
+    font-weight: 500;
+    padding: 15px;
+    background-color: #F8F8F8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loader-container {
+    text-align: center;
+}
+
+.loader-container img {
+    width: 200px;
+    padding-top: 60px;
+}
+
+.order {
+    margin: 2rem 30px;
+    font-family: "Work Sans";
+    padding: 0 10px;
+    margin-top: 30px !important;
+}
+.no-orders {
+    margin-top: 30px;
+}
+.order-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.order-data {
+     display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.order_id {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.image {
+    max-width: 26px;
+}
+
+.status_badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status_badge.green {
+    background-color: #e6f4ea;
+    border-radius: 30px;
+    color: #137333;
+}
+
+.status_badge.grey {
+    background-color: #f1f5f9;
+    color: #475569;
+    border-radius: 30px;
+}
+
+.status_badge>div {
+    border-radius: 44px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 13px;
+    text-align: center;
+}
+
+.order-view-button {
+    padding: 6px 12px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 16px;
+    border: 1px solid #0f525b;
+    border-radius: 6px;
+    color: #0f525b;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.order-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+}
+
+.order-action-buttons a {
+    display: inline-flex;
+    text-decoration: none;
+}
+
+.order-action-buttons .btn,
+.order-action-buttons .order-view-button {
+    white-space: nowrap;
+}
+
+.extend-btn {
+    background-color: #edf7f8;
+    color: #0f6b75;
+    width: auto;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.order-view-button:hover {
+    background: #0f525b;
+    color: #FFFF;
+    border: 1px solid #0f525b;
+}
+.order-btn {
+    display: flex;
+    gap: 10px;
+}
+.order-btn button {
+    background: none;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.order-btn button.active {
+    background: #0f525b;
+    border: 1px solid #0f525b;
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: white;
+}

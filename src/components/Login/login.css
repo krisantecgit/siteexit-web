@@ -1,0 +1,137 @@
+/* ── modal shell ─────────────────────────────────────────── */
+.lm-dialog .modal-content {
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+}
+
+.lm-header {
+  border-bottom: 1px solid #eeeeee;
+  padding: 16px 20px;
+}
+
+.lm-title {
+  color: #111;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.lm-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 24px 28px;
+}
+
+/* ── sub text ─────────────────────────────────────────────── */
+.lm-sub {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ── label + input ───────────────────────────────────────── */
+.lm-label {
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 6px;
+}
+
+.lm-input {
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  color: #111;
+  font-size: 15px;
+  height: 46px;
+  outline: none;
+  padding: 0 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+
+.lm-input:focus {
+  border-color: #fe7900;
+  box-shadow: 0 0 0 3px rgba(254, 121, 0, 0.12);
+}
+
+/* ── otp boxes ───────────────────────────────────────────── */
+.lm-otp-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.lm-otp-box {
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  color: #111;
+  font-size: 20px;
+  font-weight: 700;
+  height: 52px;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 52px;
+}
+
+.lm-otp-box:focus {
+  border-color: #fe7900;
+  box-shadow: 0 0 0 3px rgba(254, 121, 0, 0.12);
+}
+
+/* ── change number link ──────────────────────────────────── */
+.lm-link {
+  background: none;
+  border: 0;
+  color: #fe7900;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0;
+  text-align: left;
+}
+
+.lm-link:hover {
+  text-decoration: underline;
+}
+
+/* ── error ───────────────────────────────────────────────── */
+.lm-error {
+  background: #fff4f4;
+  border: 1px solid #f5c6c6;
+  border-radius: 6px;
+  color: #c0392b;
+  font-size: 13px;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+/* ── submit button ───────────────────────────────────────── */
+.lm-submit {
+  align-items: center;
+  background: #fe7900;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  height: 46px;
+  justify-content: center;
+  margin-top: 4px;
+  transition: background 0.15s;
+  width: 100%;
+}
+
+.lm-submit:hover {
+  background: #d46300;
+}
+
+.lm-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}

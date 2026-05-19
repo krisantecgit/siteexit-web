@@ -54,16 +54,6 @@
   position: relative;
 }
 
-.nav a.nav-mode-active::after {
-  background: #FE7900;
-  bottom: -4px;
-  content: "";
-  height: 2px;
-  left: 0;
-  position: absolute;
-  right: 0;
-}
-
 .cta-button {
   background-color: #FE7900;
   color: white;
@@ -94,12 +84,140 @@
   min-width: 0;
 }
 
+.header-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.header-profile-wrap {
+  position: relative;
+}
+
+.header-icon-btn {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 20px;
+  height: 44px;
+  justify-content: center;
+  position: relative;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  width: 44px;
+}
+
+.header-icon-btn:hover,
+.header-icon-btn.active {
+  background: rgba(254, 121, 0, 0.18);
+  border-color: rgba(254, 121, 0, 0.7);
+  color: #FE7900;
+}
+
+.header-profile-btn.is-logged-in {
+  background: #FE7900;
+  border-color: #FE7900;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.header-profile-btn.is-logged-in:hover {
+  background: #d46300;
+  color: #fff;
+}
+
+.header-profile-menu {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.2);
+  min-width: 210px;
+  opacity: 0;
+  padding: 10px;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  transform: translateY(-6px);
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 60;
+}
+
+.header-profile-wrap:hover .header-profile-menu,
+.header-profile-wrap:focus-within .header-profile-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.header-profile-menu::before {
+  content: "";
+  height: 14px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: -14px;
+}
+
+.header-profile-menu p {
+  border-bottom: 1px solid #edf0f3;
+  color: #555;
+  font-size: 14px;
+  margin: 0 0 6px;
+  padding: 8px 10px 12px;
+}
+
+.header-profile-menu strong {
+  color: #111;
+}
+
+.header-profile-menu button {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: #111;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
+  font-weight: 750;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.header-profile-menu button:hover {
+  background: #fff3e8;
+  color: #b85400;
+}
+
+.header-badge {
+  align-items: center;
+  background: #FE7900;
+  border: 2px solid #111;
+  border-radius: 999px;
+  color: #fff;
+  display: flex;
+  font-size: 11px;
+  font-weight: 800;
+  height: 20px;
+  justify-content: center;
+  min-width: 20px;
+  padding: 0 5px;
+  position: absolute;
+  right: -6px;
+  top: -6px;
+}
+
 .header-search {
   background: #fff;
   border: 1px solid #6eb3ca;
   border-radius: 999px;
   height: 54px;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   width: min(35vw, 520px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
@@ -118,7 +236,7 @@
   width: 100%;
 }
 
-.header-search button {
+.header-search-submit {
   align-items: center;
   background: transparent;
   border: 0;
@@ -139,9 +257,44 @@
   width: 42px;
 }
 
-.header-search button:hover {
+.header-search-submit:hover {
   background: rgba(254, 121, 0, 0.12);
   color: #FE7900;
+}
+
+.header-search-suggestions {
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 14px;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+  left: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 30;
+}
+
+.header-search-suggestion {
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  color: #111;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  padding: 11px 12px;
+  text-align: left;
+  width: 100%;
+}
+
+.header-search-suggestion:hover {
+  background: #fff3e8;
+  color: #d46300;
 }
 
 @media screen and (max-width: 1180px) {
@@ -183,6 +336,15 @@
 }
 
 @media screen and (max-width: 768px) {
+  .header-actions {
+    gap: 6px;
+  }
+
+  .header-icon-btn {
+    font-size: 18px;
+    height: 38px;
+    width: 38px;
+  }
 
   .icon-container {
     display: block;
@@ -228,7 +390,7 @@
   justify-content: flex-end;
 }
 
-  .header-search button {
+  .header-search-submit {
     height: 38px;
     right: 4px;
     width: 38px;

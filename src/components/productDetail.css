@@ -191,7 +191,8 @@
   font-size: 17px;
 }
 
-.pd-wish-btn:hover {
+.pd-wish-btn:hover,
+.pd-wish-btn.active {
   background: rgba(254, 121, 0, 0.18);
   border-color: #fe7900;
   color: #fe7900;
@@ -407,26 +408,48 @@
   margin-top: 4px;
 }
 
-/* CTA */
+.pd-actions {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 32px;
+}
+
+.pd-cart-cta,
 .pd-cta {
-  background: #fe7900;
   border: none;
   border-radius: 999px;
-  color: #fff;
   cursor: pointer;
   font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.04em;
-  margin-bottom: 32px;
   min-height: 56px;
   text-transform: uppercase;
   transition: background 0.18s, transform 0.14s;
   width: 100%;
 }
 
+.pd-cart-cta {
+  background: #111;
+  color: #fff;
+}
+
+.pd-cta {
+  background: #fe7900;
+  color: #fff;
+}
+
+.pd-cart-cta:hover,
+.pd-cta:hover {
+  transform: translateY(-1px);
+}
+
+.pd-cart-cta:hover {
+  background: #292929;
+}
+
 .pd-cta:hover {
   background: #d46300;
-  transform: translateY(-1px);
 }
 
 /* description */
@@ -491,6 +514,10 @@
   }
 
   .pd-price-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .pd-actions {
     grid-template-columns: 1fr;
   }
 

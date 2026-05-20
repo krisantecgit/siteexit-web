@@ -170,8 +170,7 @@
 .qty-minus,
 .qty-plus {
   align-items: center;
-  background: #f5f6f7;
-  border-radius: 50%;
+  background: transparent; 
   color: #111;
   display: inline-flex;
   height: 28px;
@@ -189,8 +188,7 @@
 
 .delete-icon {
   align-items: center;
-  background: #fff3f0;
-  border-radius: 50%;
+  background: transparent; 
   color: #d13b22;
   display: inline-flex;
   font-size: 18px;

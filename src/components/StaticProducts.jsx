@@ -1,33 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./productpage.css";
-import pm from "./images/products.webp"
+import pm from "./images/products.webp";
 import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import FormModal from "../PopupModal/FormModal";
+import axiosInstance from "../utils/axiosInstance.js"
 
-const products = [
-  { id: 1, name: "Site-Exit Rockless Stabilized Construction Device - For Sale", price: "$505", image: pm, path: "/buy" },
-  { id: 2, name: "Site-Exit Rockless Stabilized Construction Device - For Rental", price: "$505", image: pm, path: "/rent" },
+const staticProducts = [
+  {
+    id: 1,
+    name: "Site-Exit Rockless Stabilized Construction Device - For Sale",
+    image: pm,
+    path: "/buy",
+    isStatic: true,
+  },
+  {
+    id: 2,
+    name: "Site-Exit Rockless Stabilized Construction Device - For Rental",
+    image: pm,
+    path: "/rent",
+    isStatic: true,
+  },
 ];
 
 function StaticProducts() {
   const [show, setShow] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [banners, setBanners] = useState([]);
+
   const navigate = useNavigate();
+
   const handleBookClick = (product) => {
     setSelectedProduct(product);
     setShow(true);
   };
 
- 
+  useEffect(() => {
+    const fetchBannerSlider = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "cms/get_homepagedesign/?type=home page"
+        );
+
+        const bannerSliderSection = response?.data?.results?.find(
+          (item) => item?.title === "Banner Slider"
+        );
+
+        setBanners(bannerSliderSection?.slider ?? []);
+      } catch (error) {
+        console.error("Failed to fetch banner slider", error);
+      }
+    };
+
+    fetchBannerSlider();
+  }, []);
 
   return (
     <div className="container my-5">
       <h3 className="fw-bold text-dark about-title">PRODUCTS</h3>
+
       <div className="row">
-        {products.map((product) => (
-          <div key={product.id} className="col-md-6 mb-6 cards-margin">
+        {/* Static Products */}
+        {staticProducts.map((product) => (
+          <div key={product.id} className="col-md-6 mb-4 cards-margin">
             <div
               className="card shadow product-card"
               role="button"
@@ -39,9 +75,17 @@ function StaticProducts() {
                 }
               }}
             >
-              <img src={product.image} alt={product.name} className="card-img-top" />
+              <img
+                src={product.image}
+                alt={product.name}
+                className="card-img-top"
+              />
+
               <div className="card-body text-center">
-                <h5 className="fw-bold product-name mb-2">{product.name}</h5>
+                <h5 className="fw-bold product-name mb-2">
+                  {product.name}
+                </h5>
+
                 <div className="d-flex justify-content-center">
                   <button
                     className="btn btn-outline-dark mx-2"
@@ -52,6 +96,7 @@ function StaticProducts() {
                   >
                     VIEW MORE
                   </button>
+
                   <button
                     className="btn btn-dark"
                     onClick={(event) => {
@@ -66,37 +111,75 @@ function StaticProducts() {
             </div>
           </div>
         ))}
+
+        {/* Dynamic Banner Slider Categories */}
+        {banners.map((banner) => (
+          <div key={banner.id} className="col-md-6 mb-4 cards-margin">
+            <div
+              className="card shadow product-card"
+              role="button"
+              tabIndex={0}
+              onClick={() =>
+                navigate(
+                  `/productlisting?category=${banner?.cat_slug}`
+                )
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  navigate(
+                    `/productlisting?category=${banner?.cat_slug}`
+                  );
+                }
+              }}
+            >
+              <img
+                src={banner?.image__image}
+                alt={banner?.cat_slug}
+                className="card-img-top"
+              />
+
+              <div className="card-body text-center">
+                <h5
+                  className="fw-bold product-name mb-2 text-capitalize"
+                >
+                  {banner?.cat_slug?.replaceAll("-", " ")}
+                </h5>
+
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="btn btn-outline-dark mx-2"
+                    onClick={(event) => {
+                      event.stopPropagation();
+
+                      navigate(
+                        `/productlisting?category=${banner?.cat_slug}`
+                      );
+                    }}
+                  >
+                    VIEW MORE
+                  </button>
+
+                  <button
+                    className="btn btn-dark"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleBookClick(banner);
+                    }}
+                  >
+                    Enquire Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* <Modal show={show} onHide={() => setShow(false)} centered>
-        <Modal.Header closeButton className="bg-dark text-white">
-          <Modal.Title>SUBMIT YOUR REQUIREMENTS</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedProduct && (
-            <>
-              <h5>Product Detail:</h5>
-              <img src={selectedProduct.image} alt={selectedProduct.name} className="img-fluid mb-3" style={{ borderRadius: "10px" }} />
-              <div>{selectedProduct.name}</div>
-            </>
-          )}
-          <form>
-            <input type="text" name="fullName" className="form-control mb-3" placeholder="Full Name" onChange={handleChange} />
-            <input type="tel" name="mobile" className="form-control mb-3" placeholder="Mobile No" onChange={handleChange} />
-            <input type="email" name="email" className="form-control mb-3" placeholder="Email" onChange={handleChange} />
-            <input type="text" name="location" className="form-control mb-3" placeholder="Location" onChange={handleChange} />
-            <div className="d-flex gap-3 mb-3">
-              <DatePicker selected={formData.fromDate} onChange={(date) => setFormData({ ...formData, fromDate: date })} placeholderText="From Date" className="form-control" />
-              <DatePicker selected={formData.toDate} onChange={(date) => setFormData({ ...formData, toDate: date })} placeholderText="To Date" className="form-control" />
-            </div>
-            <textarea name="message" className="form-control mb-3" placeholder="Message" rows="3" onChange={handleChange}></textarea>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="w-100 text-white fw-bold" style={{background : "FE7900" , borderRadius : "10px"}}>Submit</button>
-        </Modal.Footer>
-      </Modal> */}
-      <FormModal selectedProduct={selectedProduct} show={show} setShow={setShow} />
+      <FormModal
+        selectedProduct={selectedProduct}
+        show={show}
+        setShow={setShow}
+      />
     </div>
   );
 }

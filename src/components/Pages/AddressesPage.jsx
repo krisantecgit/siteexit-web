@@ -290,7 +290,7 @@ function AddressesPage() {
           <strong>{userName}</strong>
           <button type="button" onClick={() => navigate("/orders")}>Orders</button>
           <button className="active" type="button">Address</button>
-          <button type="button" onClick={() => navigate("/wishlist")}>Wishlist</button>
+          {/* <button type="button" onClick={() => navigate("/wishlist")}>Wishlist</button> */}
           <button type="button" onClick={logout}>Logout</button>
         </aside>
 

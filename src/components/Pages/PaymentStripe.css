@@ -1,0 +1,270 @@
+/* =============================================
+   STRIPE-INSPIRED THEME — Color Override Only
+   Drop this after your existing payment.css
+   ============================================= */
+
+/* Page background */
+.payment-page-wrapper {
+  background-color: #f6f9fc;
+  color: #1a1f36;
+}
+
+/* Spinner */
+.payment-spinner {
+  border-color: rgba(99, 91, 255, 0.12);
+  border-left-color: #635bff;
+}
+
+/* Cards */
+.payment-methods-card,
+.payment-summary-card {
+  background: #ffffff;
+  border: 1px solid #e3e8ee;
+  box-shadow: 0 2px 5px 0 rgba(60, 66, 87, 0.08), 0 1px 1px 0 rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+/* Tabs bar */
+.payment-methods-tabs {
+  background-color: #f6f9fc;
+  border-bottom: 1px solid #e3e8ee;
+}
+
+/* Tab active indicator */
+.tab-btn::after {
+  background-color: #635bff;
+}
+
+.tab-btn.active {
+  background-color: #ffffff;
+}
+
+.tab-icon {
+  color: #8792a2;
+}
+
+.tab-btn.active .tab-icon {
+  color: #635bff;
+}
+
+.tab-label strong {
+  color: #3c4257;
+}
+
+.tab-btn.active .tab-label strong {
+  color: #1a1f36;
+}
+
+.tab-label span {
+  color: #8792a2;
+}
+
+/* Info alert (COD panel) */
+.info-alert {
+  background-color: #f0f0ff;
+  border-left-color: #635bff;
+}
+
+.alert-icon {
+  color: #635bff;
+}
+
+.alert-text h5 {
+  color: #3d3990;
+}
+
+.alert-text p {
+  color: #4f566b;
+}
+
+/* COD details box */
+.cod-details-box {
+  background-color: #f6f9fc;
+  border-color: #e3e8ee;
+}
+
+.cod-row h6 {
+  color: #3c4257;
+}
+
+.cod-row span {
+  color: #8792a2;
+}
+
+.cod-icon {
+  color: #8792a2;
+}
+
+/* COD submit button */
+.btn-pay-submit.cod-btn {
+  background-color: #635bff;
+  box-shadow: 0 4px 14px rgba(99, 91, 255, 0.35);
+}
+
+.btn-pay-submit.cod-btn:hover {
+  background-color: #4f46e5;
+  box-shadow: 0 6px 20px rgba(99, 91, 255, 0.45);
+}
+
+.price-badge {
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Card preview — 3D card */
+.mock-card {
+  box-shadow: 0 18px 40px rgba(26, 31, 54, 0.22);
+}
+
+.card-face.front {
+  background: linear-gradient(135deg, #1a1f36 0%, #3c4257 50%, #635bff 100%);
+}
+
+.card-face.back {
+  background: linear-gradient(135deg, #0d1021 0%, #1a1f36 100%);
+}
+
+.card-chip {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+/* Form inputs */
+.card-form input {
+  border-color: #c1c9d2;
+  background-color: #ffffff;
+  color: #1a1f36;
+}
+
+.card-form input::placeholder {
+  color: #a3acb9;
+}
+
+.card-form input:focus {
+  border-color: #635bff;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.16);
+}
+
+.form-group label {
+  color: #4f566b;
+}
+
+.input-icon {
+  color: #8792a2;
+}
+
+/* Online pay button */
+.btn-pay-submit.online-btn {
+  background-color: #635bff;
+  box-shadow: 0 4px 14px rgba(99, 91, 255, 0.35);
+}
+
+.btn-pay-submit.online-btn:hover {
+  background-color: #4f46e5;
+  box-shadow: 0 6px 20px rgba(99, 91, 255, 0.45);
+}
+
+/* Page title */
+.payment-title-header h1 {
+  color: #1a1f36;
+}
+
+.payment-title-header .subtitle {
+  color: #8792a2;
+}
+
+/* Summary card */
+.summary-dollar-icon {
+  color: #635bff;
+}
+
+.summary-title h3 {
+  color: #1a1f36;
+}
+
+.info-lbl {
+  color: #8792a2;
+}
+
+.info-val {
+  color: #3c4257;
+}
+
+.info-val.highlight {
+  color: #635bff;
+  background-color: #f0f0ff;
+}
+
+.badge-status {
+  background-color: #fff8e7;
+  color: #c2700a;
+}
+
+.divider {
+  border-color: #e3e8ee;
+}
+
+.summary-price-row {
+  color: #4f566b;
+}
+
+.summary-price-row strong {
+  color: #1a1f36;
+}
+
+.summary-price-row.discount,
+.summary-price-row.discount strong {
+  color: #09825d;
+}
+
+.free-shipping {
+  color: #09825d;
+}
+
+.summary-price-row.total {
+  color: #1a1f36;
+}
+
+.total-val {
+  color: #635bff;
+}
+
+/* Savings alert */
+.savings-alert-box {
+  background-color: #ebfbf5;
+  border-color: #cbf4c9;
+  color: #09825d;
+}
+
+.savings-icon {
+  color: #09825d;
+}
+
+/* Security box */
+.security-guarantee-box {
+  background-color: #f6f9fc;
+  border-color: #e3e8ee;
+}
+
+.guarantee-icon {
+  color: #8792a2;
+}
+
+.security-guarantee-box h6 {
+  color: #3c4257;
+}
+
+.security-guarantee-box p {
+  color: #8792a2;
+}
+
+/* Button spinner */
+.btn-spinner {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-left-color: #ffffff;
+}
+
+/* Mobile: active tab left border */
+@media (max-width: 480px) {
+  .tab-btn.active {
+    border-left-color: #635bff;
+  }
+}

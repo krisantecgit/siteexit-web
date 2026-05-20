@@ -4,8 +4,8 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env react-scripts start",
+    "build": "env-cmd -f .env react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -14,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
+    "@stripe/react-stripe-js": "^6.4.0",
+    "@stripe/stripe-js": "^9.6.0",
     "axios": "^1.16.1",
     "bootstrap": "^5.3.3",
     "date-fns": "^4.1.0",
@@ -40,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "env-cmd": "^11.0.0",
     "eslint-plugin-react-hooks": "^7.1.1"
   }
 }

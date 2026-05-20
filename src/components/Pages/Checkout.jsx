@@ -121,7 +121,8 @@ function Checkout() {
       navigate("/payment");
     } catch (err) {
       console.error("Checkout process failed:", err);
-      toast.error(err?.response?.data?.message || "Checkout process failed. Please try again.");
+      const errMsg = err?.response?.data?.error || err?.response?.data?.message || err?.response?.data?.details || "Checkout process failed. Please try again.";
+      toast.error(errMsg);
     } finally {
       setPlacing(false);
     }

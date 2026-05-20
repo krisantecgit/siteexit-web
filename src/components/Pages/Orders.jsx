@@ -105,7 +105,7 @@ function Orders() {
           <strong>{userName}</strong>
           <button className="active" type="button">Orders</button>
           <button type="button" onClick={() => navigate("/address")}>Address</button>
-          <button type="button" onClick={() => navigate("/wishlist")}>Wishlist</button>
+          {/* <button type="button" onClick={() => navigate("/wishlist")}>Wishlist</button> */}
           <button type="button" onClick={logout}>Logout</button>
         </aside>
 

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./payment.css";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
-import { FaRegCreditCard, FaLock, FaCheckCircle, FaChevronRight, FaRegSmile } from "react-icons/fa";
-import { FiCreditCard, FiShield, FiTruck, FiInfo } from "react-icons/fi";
+import { FaRegCreditCard, FaRegSmile } from "react-icons/fa";
+import { FiShield, FiTruck, FiInfo } from "react-icons/fi";
 import CheckoutNavbar from "../CheckoutNavbar/CheckoutNavbar";
+import StripePaymentSection from "./StripePaymentSection";
 import axiosInstance from "../../utils/axiosInstance";
+import { clearPaymentIntentIdempotencyKey } from "../../utils/paymentApi";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearBuyCart, clearRentCart } from "../../redux/cartSlice";
 
@@ -15,18 +17,13 @@ function Payment() {
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const [cardDetails, setCardDetails] = useState({
-    number: "",
-    name: "",
-    expiry: "",
-    cvv: "",
-    focused: ""
-  });
+  const [completingRedirect, setCompletingRedirect] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const orderIdRaw = localStorage.getItem("orderId");
   const orderId = (!orderIdRaw || orderIdRaw === "null" || orderIdRaw === "undefined") ? "580" : orderIdRaw;
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!orderId) {
@@ -59,6 +56,70 @@ function Payment() {
   const totalAmount = order?.total_amount || 0;
   const totalSaved = Math.max(totalAmount - netAmount, 0);
   const deliveryCharge = Number(localStorage.getItem("deliveryCharge") || 0);
+  const payableAmount = netAmount + deliveryCharge;
+
+  const clearCheckoutSession = useCallback(() => {
+    localStorage.removeItem("orderId");
+    localStorage.removeItem("buyCart");
+    localStorage.removeItem("rentCart");
+    localStorage.removeItem("saleAddress");
+    localStorage.removeItem("rentalAddress");
+    localStorage.removeItem("deliveryCharge");
+    dispatch(clearBuyCart());
+    dispatch(clearRentCart());
+    clearPaymentIntentIdempotencyKey(orderId);
+  }, [dispatch, orderId]);
+
+  const completeOnlineOrder = useCallback(async () => {
+    const payload = {
+      status: "Placed",
+      payment_mode: "online",
+    };
+    const res = await axiosInstance.post(
+      `/accounts/orders/${orderId}/order_status_update/`,
+      payload
+    );
+    toast.success(res.data?.message || "Online payment successful! Order confirmed.");
+    clearCheckoutSession();
+    navigate("/orders");
+  }, [clearCheckoutSession, navigate, orderId]);
+
+  useEffect(() => {
+    const redirectStatus = searchParams.get("redirect_status");
+    const paymentIntent = searchParams.get("payment_intent");
+
+    if (redirectStatus !== "succeeded" || !paymentIntent || !orderId) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function finalizeRedirectPayment() {
+      setCompletingRedirect(true);
+      try {
+        await completeOnlineOrder();
+        if (!cancelled) {
+          setSearchParams({}, { replace: true });
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error(
+          error.response?.data?.message ||
+            "Payment succeeded but order confirmation failed. Contact support."
+        );
+      } finally {
+        if (!cancelled) {
+          setCompletingRedirect(false);
+        }
+      }
+    }
+
+    finalizeRedirectPayment();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [completeOnlineOrder, orderId, searchParams, setSearchParams]);
 
   async function PlaceOrderByCOD() {
     setProcessing(true);
@@ -69,17 +130,7 @@ function Payment() {
     try {
       const res = await axiosInstance.post(`/accounts/orders/${orderId}/order_status_update/`, payload);
       toast.success(res.data.message || "Order placed successfully via Cash on Delivery!");
-      
-      // Cleanup localStorage and Redux cart
-      localStorage.removeItem("orderId");
-      localStorage.removeItem("buyCart");
-      localStorage.removeItem("rentCart");
-      localStorage.removeItem("saleAddress");
-      localStorage.removeItem("rentalAddress");
-      localStorage.removeItem("deliveryCharge");
-      dispatch(clearBuyCart());
-      dispatch(clearRentCart());
-      
+      clearCheckoutSession();
       navigate("/orders");
     } catch (error) {
       console.error(error);
@@ -87,50 +138,6 @@ function Payment() {
     } finally {
       setProcessing(false);
     }
-  }
-
-  async function HandleOnlinePayment(e) {
-    e.preventDefault();
-    if (!cardDetails.number || !cardDetails.name || !cardDetails.expiry || !cardDetails.cvv) {
-      toast.error("Please fill in all credit card details.");
-      return;
-    }
-    if (cardDetails.number.replace(/\s/g, "").length < 16) {
-      toast.error("Invalid card number length.");
-      return;
-    }
-    if (cardDetails.cvv.length < 3) {
-      toast.error("Invalid CVV.");
-      return;
-    }
-
-    setProcessing(true);
-    // Simulate payment transaction Processing
-    setTimeout(async () => {
-      const payload = {
-        status: "Placed",
-        payment_mode: "online"
-      };
-      try {
-        const res = await axiosInstance.post(`/accounts/orders/${orderId}/order_status_update/`, payload);
-        toast.success("Online payment successful! Order confirmed.");
-        
-        localStorage.removeItem("orderId");
-        localStorage.removeItem("buyCart");
-        localStorage.removeItem("rentCart");
-        localStorage.removeItem("saleAddress");
-        localStorage.removeItem("rentalAddress");
-        dispatch(clearBuyCart());
-        dispatch(clearRentCart());
-        
-        navigate("/orders");
-      } catch (error) {
-        console.error(error);
-        toast.error("Payment authorization failed. Please try again.");
-      } finally {
-        setProcessing(false);
-      }
-    }, 1800);
   }
 
   const formatPrice = (price) => {
@@ -142,37 +149,18 @@ function Payment() {
     return `Rs. ${formatted}`;
   };
 
-  const handleCardNumberChange = (e) => {
-    let val = e.target.value.replace(/\D/g, "");
-    if (val.length > 16) val = val.slice(0, 16);
-    // Format as four blocks of 4 digits: "XXXX XXXX XXXX XXXX"
-    const formatted = val.replace(/(\d{4})(?=\d)/g, "$1 ");
-    setCardDetails({ ...cardDetails, number: formatted });
-  };
-
-  const handleExpiryChange = (e) => {
-    let val = e.target.value.replace(/\D/g, "");
-    if (val.length > 4) val = val.slice(0, 4);
-    if (val.length >= 2) {
-      val = val.slice(0, 2) + "/" + val.slice(2);
-    }
-    setCardDetails({ ...cardDetails, expiry: val });
-  };
-
-  const handleCvvChange = (e) => {
-    let val = e.target.value.replace(/\D/g, "");
-    if (val.length > 4) val = val.slice(0, 4);
-    setCardDetails({ ...cardDetails, cvv: val });
-  };
-
   return (
     <div className="payment-page-wrapper">
       <CheckoutNavbar />
       
-      {loading ? (
+      {loading || completingRedirect ? (
         <div className="payment-loading-container">
           <div className="payment-spinner"></div>
-          <p>Retrieving secure order details...</p>
+          <p>
+            {completingRedirect
+              ? "Confirming your payment…"
+              : "Retrieving secure order details…"}
+          </p>
         </div>
       ) : (
         <div className="payment-layout-container">
@@ -262,116 +250,25 @@ function Payment() {
 
                 {active === "online" && (
                   <div className="online-panel animate-fade-in">
-                    {/* Live Card Preview */}
-                    <div className="card-preview-container">
-                      <div className={`mock-card ${cardDetails.focused === "cvv" ? "flipped" : ""}`}>
-                        <div className="card-face front">
-                          <div className="card-gloss-bg"></div>
-                          <div className="card-brand">VIRTUAL CHIP</div>
-                          <div className="card-chip"></div>
-                          <div className="card-number-display">
-                            {cardDetails.number || "•••• •••• •••• ••••"}
-                          </div>
-                          <div className="card-meta">
-                            <div className="card-holder">
-                              <span className="card-lbl">CARDHOLDER</span>
-                              <div className="card-val">{cardDetails.name.toUpperCase() || "YOUR FULL NAME"}</div>
-                            </div>
-                            <div className="card-exp">
-                              <span className="card-lbl">EXPIRES</span>
-                              <div className="card-val">{cardDetails.expiry || "MM/YY"}</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="card-face back">
-                          <div className="card-strip"></div>
-                          <div className="card-cvv-box">
-                            <span className="card-lbl">CVV</span>
-                            <div className="cvv-display">{cardDetails.cvv || "•••"}</div>
-                          </div>
-                          <div className="card-signature">SECURE TRANSACTION</div>
-                        </div>
+                    <div className="info-alert stripe-info-alert">
+                      <FiShield className="alert-icon" />
+                      <div className="alert-text">
+                        <h5>Secure card payment</h5>
+                        <p>
+                          Pay with credit or debit card via Stripe. Amount charged:{" "}
+                          <strong>{formatPrice(payableAmount)}</strong>
+                        </p>
                       </div>
                     </div>
 
-                    {/* Card Input Form */}
-                    <form className="card-form" onSubmit={HandleOnlinePayment}>
-                      <div className="form-group">
-                        <label htmlFor="cardNum">Card Number</label>
-                        <div className="input-with-icon">
-                          <FiCreditCard className="input-icon" />
-                          <input
-                            type="text"
-                            id="cardNum"
-                            placeholder="4111 2222 3333 4444"
-                            value={cardDetails.number}
-                            onChange={handleCardNumberChange}
-                            onFocus={() => setCardDetails({ ...cardDetails, focused: "number" })}
-                            required
-                          />
-                        </div>
-                      </div>
+                    <StripePaymentSection
+                      orderId={orderId}
+                      amountLabel={formatPrice(payableAmount)}
+                      processing={processing}
+                      setProcessing={setProcessing}
+                      onPaymentSuccess={completeOnlineOrder}
+                    />
 
-                      <div className="form-group">
-                        <label htmlFor="cardName">Cardholder Name</label>
-                        <input
-                          type="text"
-                          id="cardName"
-                          placeholder="John Doe"
-                          value={cardDetails.name}
-                          onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
-                          onFocus={() => setCardDetails({ ...cardDetails, focused: "name" })}
-                          required
-                        />
-                      </div>
-
-                      <div className="form-row-2">
-                        <div className="form-group">
-                          <label htmlFor="cardExpiry">Expiration Date</label>
-                          <input
-                            type="text"
-                            id="cardExpiry"
-                            placeholder="MM/YY"
-                            value={cardDetails.expiry}
-                            onChange={handleExpiryChange}
-                            onFocus={() => setCardDetails({ ...cardDetails, focused: "expiry" })}
-                            required
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label htmlFor="cardCvv">CVV Code</label>
-                          <input
-                            type="password"
-                            id="cardCvv"
-                            placeholder="•••"
-                            maxLength="4"
-                            value={cardDetails.cvv}
-                            onChange={handleCvvChange}
-                            onFocus={() => setCardDetails({ ...cardDetails, focused: "cvv" })}
-                            onBlur={() => setCardDetails({ ...cardDetails, focused: "" })}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="payment-action-area">
-                        <button
-                          type="submit"
-                          className="btn-pay-submit online-btn"
-                          disabled={processing}
-                        >
-                          {processing ? (
-                            <span className="btn-spinner"></span>
-                          ) : (
-                            <>
-                              <FaLock className="lock-icon" />
-                              <span>PAY {formatPrice(netAmount)} NOW</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </form>
                   </div>
                 )}
               </div>

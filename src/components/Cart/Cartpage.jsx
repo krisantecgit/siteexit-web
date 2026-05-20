@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import {
   removeFromRentCart,
 } from "../../redux/cartSlice";
 import axiosInstance from "../../utils/axiosInstance";
+import LoginModal from "../Login/Login.jsx"
 import "./cartpage.css";
 
 const formatMoney = (value) => {
@@ -36,13 +37,32 @@ function Cartpage() {
     0
   );
 
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
+
+  const handleCheckoutClick = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      setShowLoginModal(true);
+      return;
+    }
+    navigate("/checkout");
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    setShowLoginModal(false);
+    navigate("/checkout");
+  };
+
   useEffect(() => {
     if (rentCart.length > 0) {
-      axiosInstance.get(`sitedata/site/`).catch(() => {});
-      
+      axiosInstance.get(`sitedata/site/`).catch(() => { });
+
       const uniqueRentIds = [...new Set(rentCart.map(item => item.id))];
       uniqueRentIds.forEach(id => {
-        axiosInstance.get(`catlog/variant-price-packages/?product_variant=${id}&active=true`).catch(() => {});
+        axiosInstance.get(`catlog/variant-price-packages/?product_variant=${id}&active=true`).catch(() => { });
       });
     }
   }, []);
@@ -140,7 +160,7 @@ function Cartpage() {
                 <div className="left-buy-rent-price"><span>Total</span></div>
                 <div className="total-price">{formatMoney(totalAmount)}</div>
               </div>
-              <button className="cart-btn mt-3" type="button" onClick={() => navigate("/checkout")}>
+              <button className="cart-btn mt-3" type="button" onClick={handleCheckoutClick}>
                 <span>{formatMoney(totalAmount)}</span>
                 <span>CHECK OUT</span>
               </button>
@@ -161,6 +181,11 @@ function Cartpage() {
           </div>
         </section>
       )}
+      <LoginModal
+        show={showLoginModal}
+        onHide={() => setShowLoginModal(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
     </main>
   );
 }

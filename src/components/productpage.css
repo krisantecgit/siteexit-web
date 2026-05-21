@@ -40,7 +40,7 @@ h2::after {
     display: block;
     width: 100px;
     height: 4px;
-    background: #FE7900;
+    /* background: #FE7900; */
     /* margin: 8px auto 0; */
 }
 

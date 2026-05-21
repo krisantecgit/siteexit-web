@@ -11,7 +11,7 @@ axiosInstance.interceptors.request.use((config) => {
     config.headers["Authorization"] = `Token ${token}`; // Add the token to the request headers
   }
 
-  config.headers["domain"] = "uat.taprootcrm.com";
+  config.headers["domain"] = "site-exit.taprootcrm.com";
   // config.headers["domain"] = "192.168.0.180"; 
   // config.headers["domain"] = "192.168.100.114";
   // config.headers["domain"] = "central";

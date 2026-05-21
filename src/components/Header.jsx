@@ -23,6 +23,8 @@ function Header({ scrollToProduct, scrollToAbout }) {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [siteData, setSiteData] = useState(null);
+
   const [profileName, setProfileName] = useState(localStorage.getItem("name") || "");
   const { buyCart = [], rentCart = [] } = useSelector((store) => store.cart || {});
   const wishlistItems = useSelector((store) => store.wishlist?.items || []);
@@ -64,6 +66,40 @@ function Header({ scrollToProduct, scrollToAbout }) {
 
     return () => clearTimeout(debounceTimer);
   }, [catalogSearch]);
+
+
+  useEffect(() => {
+    axiosInstance
+      .get("sitedata/site/")
+      .then((res) => {
+        const site = res.data?.results?.[0];
+
+        if (!site) return;
+
+        setSiteData(site);
+
+        if (site.title) {
+          document.title = site.title;
+        }
+
+        const favicon =
+          site.favicon?.image;
+
+        if (favicon) {
+          let link =
+            document.querySelector("link[rel*='icon']");
+
+          if (!link) {
+            link = document.createElement("link");
+            link.rel = "icon";
+            document.head.appendChild(link);
+          }
+
+          link.href = favicon;
+        }
+      })
+      .catch(() => { });
+  }, []);
 
   const closeMenu = () => setIsOpen(false);
 
@@ -123,12 +159,16 @@ function Header({ scrollToProduct, scrollToAbout }) {
     <div className="header-shell">
       <header className="header">
         <div onClick={() => navigate("/")}>
-          <img src={img} className="header-img" alt="Site Exit" />
+          <img
+            src={siteData?.logo?.image}
+            className="header-img"
+            alt={siteData?.title || "Logo"}
+          />
         </div>
 
         <nav className={`nav ${isOpen ? "active" : "close"}`}>
-          
-    
+
+
           <Link onClick={handleProductsClick} to="/">
             Products
           </Link>
@@ -146,38 +186,38 @@ function Header({ scrollToProduct, scrollToAbout }) {
           >
             Rent
           </Link>
-          
+
         </nav>
 
         <div className="right-container">
-            <form className="header-search" onSubmit={handleCatalogSearch}>
-              <input
-                type="search"
-                value={catalogSearch}
-                placeholder="What are you searching for?"
-                onChange={(event) => setCatalogSearch(event.target.value)}
-                onFocus={() => setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 120)}
-              />
-              <button className="header-search-submit" type="submit" aria-label="Search">
-                <FiSearch />
-              </button>
-              {showSuggestions && suggestions.length > 0 && (
-                <div className="header-search-suggestions">
-                  {suggestions.map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      type="button"
-                      className="header-search-suggestion"
-                      onMouseDown={(event) => event.preventDefault()}
-                      onClick={() => searchForSuggestion(suggestion)}
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </form>
+          <form className="header-search" onSubmit={handleCatalogSearch}>
+            <input
+              type="search"
+              value={catalogSearch}
+              placeholder="What are you searching for?"
+              onChange={(event) => setCatalogSearch(event.target.value)}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 120)}
+            />
+            <button className="header-search-submit" type="submit" aria-label="Search">
+              <FiSearch />
+            </button>
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="header-search-suggestions">
+                {suggestions.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    className="header-search-suggestion"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => searchForSuggestion(suggestion)}
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
+          </form>
           <div className="header-actions">
             <div className="header-profile-wrap">
               <button

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FiHeart, FiShoppingCart, FiTrash2 } from "react-icons/fi";
+import {
+  FiHeart,
+  FiShoppingCart,
+  FiTrash2,
+} from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -43,7 +47,6 @@ function WishListPage() {
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userid");
   const [wishlistItems, setWishlistItems] = useState([]);
-  const [listingType, setListingType] = useState("rent");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -58,7 +61,7 @@ function WishListPage() {
 
     axiosInstance
       .get("catlog/wishlists/", {
-        params: { user: userId, type: listingType },
+        params: { user: userId },
       })
       .then((res) => {
         const results = Array.isArray(res.data?.results) ? res.data.results : [];
@@ -73,7 +76,7 @@ function WishListPage() {
 
   useEffect(() => {
     fetchWishlist();
-  }, [listingType, userId]);
+  }, [ userId]);
 
   const addToCart = (item) => {
     if (item.type === "rent") {
@@ -116,77 +119,138 @@ function WishListPage() {
     return (
       <main className="wishlist-page">
         <div className="wishlist-container">
-          <section className="wishlist-empty">
-            <h2>Please login to view your wishlist</h2>
-            <p>Your saved products will appear here after login.</p>
-            <button type="button" onClick={() => navigate("/")}>Go home</button>
-          </section>
+
+          {/* ───────── HEADER ───────── */}
+          <div className="wishlist-heading">
+            <div>
+              <span>
+                <FiHeart />
+                Saved Products
+              </span>
+
+              <h1>My Wishlist</h1>
+
+              <p className="wishlist-subtitle">
+                Review and manage your shortlisted industrial safety products.
+              </p>
+            </div>
+ 
+          </div>
+
+          {/* ───────── STATES ───────── */}
+
+          {loading && (
+            <section className="wishlist-empty">
+              <h2>Loading Wishlist</h2>
+              <p>Please wait while we fetch your saved products.</p>
+            </section>
+          )}
+
+          {error && (
+            <section className="wishlist-empty">
+              <h2>Something went wrong</h2>
+              <p>{error}</p>
+            </section>
+          )}
+
+          {/* ───────── PRODUCTS ───────── */}
+
+          {!loading && !error && wishlistItems.length > 0 ? (
+            <div className="wishlist-grid">
+              {wishlistItems.map((item) => (
+                <article
+                  className="wishlist-card"
+                  key={item.wishlistId || item.id}
+                >
+                  <button
+                    className="wishlist-card-media"
+                    type="button"
+                    onClick={() => openProduct(item)}
+                  >
+                    <img src={item.image} alt={item.name} />
+                  </button>
+
+                  <div className="wishlist-card-body">
+
+                    <span className="wishlist-product-type">
+                      {item.type === "rent"
+                        ? "Rental Product"
+                        : "Purchase Product"}
+                    </span>
+
+                    <button
+                      className="wishlist-title"
+                      type="button"
+                      onClick={() => openProduct(item)}
+                    >
+                      {item.name}
+                    </button>
+
+                    <div className="wishlist-meta">
+                      <div>
+                        <span className="wishlist-price-label">
+                          {item.type === "rent"
+                            ? "Rental Price"
+                            : "Sale Price"}
+                        </span>
+
+                        <strong>
+                          {formatMoney(item.offerPrice)}
+                        </strong>
+                      </div>
+
+                      <button
+                        className="wishlist-remove-btn"
+                        type="button"
+                        onClick={() => removeFromServerWishlist(item)}
+                        aria-label={`Remove ${item.name} from wishlist`}
+                      >
+                        <FiTrash2 />
+                      </button>
+                    </div>
+                    <div className="wishlist-actions">
+                      <button
+                        className="wishlist-cart-btn"
+                        type="button"
+                        onClick={() => addToCart(item)}
+                      >
+                        <FiShoppingCart />
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : null}
+
+          {/* ───────── EMPTY ───────── */}
+
+          {!loading && !error && wishlistItems.length === 0 && (
+            <section className="wishlist-empty">
+              <div className="wishlist-empty-icon">
+                <FiHeart />
+              </div>
+
+              <h2>Your wishlist is empty</h2>
+
+              <p>
+                Save products while browsing industrial and safety equipment,
+                then access them here anytime.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => navigate("/buy")}
+              >
+                Browse Products
+              </button>
+            </section>
+          )}
         </div>
       </main>
     );
   }
-
-  return (
-    <main className="wishlist-page">
-      <div className="wishlist-container">
-        <div className="wishlist-heading">
-          <div>
-            <span><FiHeart /> {wishlistItems.length} saved item{wishlistItems.length === 1 ? "" : "s"}</span>
-            <h1>Wishlist</h1>
-          </div>
-          <div className="listing-type-container">
-            <button className={`listing-type ${listingType === "buy" ? "active" : ""}`} type="button" onClick={() => setListingType("buy")}>Buy</button>
-            <button className={`listing-type ${listingType === "rent" ? "active" : ""}`} type="button" onClick={() => setListingType("rent")}>Rent</button>
-          </div>
-        </div>
-
-        {loading && <section className="wishlist-empty">Loading wishlist...</section>}
-        {error && <section className="wishlist-empty">{error}</section>}
-
-        {!loading && !error && wishlistItems.length > 0 ? (
-          <div className="wishlist-grid">
-            {wishlistItems.map((item) => (
-              <article className="wishlist-card" key={item.wishlistId || item.id}>
-                <button className="wishlist-card-media" type="button" onClick={() => openProduct(item)}>
-                  <img src={item.image} alt={item.name} />
-                </button>
-                <div className="wishlist-card-body">
-                  <button className="wishlist-title" type="button" onClick={() => openProduct(item)}>
-                    {item.name}
-                  </button>
-                  <div className="wishlist-meta">
-                    <strong>{formatMoney(item.offerPrice)}</strong>
-                    <span>{item.type === "rent" ? "Rental" : "Sale"}</span>
-                  </div>
-                  <div className="wishlist-actions">
-                    <button className="wishlist-cart-btn" type="button" onClick={() => addToCart(item)}>
-                      <FiShoppingCart /> Add to cart
-                    </button>
-                    <button
-                      className="wishlist-remove-btn"
-                      type="button"
-                      onClick={() => removeFromServerWishlist(item)}
-                      aria-label={`Remove ${item.name} from wishlist`}
-                    >
-                      <FiTrash2 />
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : null}
-
-        {!loading && !error && wishlistItems.length === 0 && (
-          <section className="wishlist-empty">
-            <h2>Your wishlist is empty</h2>
-            <p>Save products while browsing, then come back here when you are ready.</p>
-            <button type="button" onClick={() => navigate("/buy")}>Browse products</button>
-          </section>
-        )}
-      </div>
-    </main>
-  );
 }
 
 export default WishListPage;

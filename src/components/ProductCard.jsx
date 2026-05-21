@@ -127,14 +127,23 @@ function ProductCard({ product, mode = "buy", onOpen, onAdd, onEnquire }) {
       );
     }
 
-    if (offerPrice && salePrice) {
-      return (
-        <div className="pc-price-wrap">
-          <span className="pc-price">{formatProductPrice(offerPrice)}</span>
-          <del className="pc-original">{formatProductPrice(salePrice)}</del>
-        </div>
-      );
-    }
+   if (
+  offerPrice &&
+  salePrice &&
+  Number(offerPrice) < Number(salePrice)
+) {
+  return (
+    <div className="pc-price-wrap">
+      <span className="pc-price">
+        {formatProductPrice(offerPrice)}
+      </span>
+
+      <del className="pc-original">
+        {formatProductPrice(salePrice)}
+      </del>
+    </div>
+  );
+}
 
     if (salePrice) {
       return (
@@ -156,7 +165,7 @@ function ProductCard({ product, mode = "buy", onOpen, onAdd, onEnquire }) {
 
   return (
     <article
-      className={`pc-card${isOutOfStock ? " pc-card--oos" : ""}`}
+      className="pc-card"
       role="button"
       tabIndex={0}
       aria-label={isOutOfStock ? `${product.name}, out of stock` : undefined}
@@ -171,7 +180,7 @@ function ProductCard({ product, mode = "buy", onOpen, onAdd, onEnquire }) {
         {/* {isOutOfStock && (
           <span className="pc-badge pc-badge-oos">Out of stock</span>
         )} */}
-       
+
         <img
           src={getProductImage(product)}
           alt=""
@@ -191,48 +200,61 @@ function ProductCard({ product, mode = "buy", onOpen, onAdd, onEnquire }) {
 
         <h3 className="pc-name">{product.name}</h3>
 
-        {product.sku_code && (
-          <p className="pc-sku">SKU: {product.sku_code}</p>
-        )}
+        <div className="pc-meta-wrap">
+          {product.sku_code && (
+            <p className="pc-sku">SKU: {product.sku_code}</p>
+          )}
 
+          {!!product.options?.length && (
+            <div className="pc-variants">
+              {product.options.map((option) => (
+                <div key={option.id} className="pc-variant-item">
+                  <span className="pc-variant-label">
+                    {option.variant_type}:
+                  </span>
+
+                  <span className="pc-variant-value">
+                    {option.variant_option}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         {/* price row */}
         {renderPrice()}
 
         {isLimitedStock && (
-  <p className="pc-limited-text">Only a few left!</p>
-)}
-
-        {/* out of stock text */}
-        {isOutOfStock && (
-          <p className="pc-oos-text">Out of stock</p>
+          <p className="pc-limited-text">Only a few left!</p>
         )}
 
+
+
         {/* actions */}
-       
-          <div className="pc-actions">
-  <button
-    type="button"
-    className="pc-btn-add"
-    disabled={isOutOfStock}
-    onClick={(e) => {
-      e.stopPropagation();
-      if (isOutOfStock) return;
-      onAdd(e, product);
-    }}
-  >
-    <FiShoppingCart />
-    Add to Cart
-  </button>
-  <button
-    type="button"
-    className={`pc-btn-wish${isWishlisted ? " active" : ""}`}
-    disabled={wishlistLoading}
-    aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-    onClick={handleWishlist}
-  >
-    <FiHeart />
-  </button>
-</div>
+
+        <div className="pc-actions">
+          <button
+            type="button"
+            className="pc-btn-add"
+            disabled={false}
+           onClick={(e) => {
+  e.stopPropagation();
+  onAdd(e, product);
+}}
+          >
+            <FiShoppingCart />
+            Add to Cart
+          </button>
+          <button
+            type="button"
+            className={`pc-btn-wish${isWishlisted ? " active" : ""}`}
+            disabled={wishlistLoading}
+            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            onClick={handleWishlist}
+          >
+            <FiHeart />
+          </button>
+        </div>
       </div>
       <LoginModal show={loginShow} onHide={() => setLoginShow(false)} />
     </article>

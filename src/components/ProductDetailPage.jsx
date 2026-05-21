@@ -162,7 +162,24 @@ function ProductDetailPage({ productData = null }) {
   const productImages = useMemo(() => getProductImages(product), [product]);
   const imageUrl = selectedImage || productImages[0]?.src || pm;
   const salePrice = formatMoney(product?.sale_offer_price || product?.sale_price);
-  const originalSalePrice = product?.sale_offer_price ? formatMoney(product?.sale_price) : null;
+  const hasMeaningfulDiscount =
+    Number(product?.sale_price) >
+    Number(product?.sale_offer_price) &&
+    (
+      (
+        (
+          Number(product?.sale_price) -
+          Number(product?.sale_offer_price)
+        ) /
+        Number(product?.sale_price)
+      ) *
+      100
+    ) > 5;
+
+  const originalSalePrice =
+    hasMeaningfulDiscount
+      ? formatMoney(product?.sale_price)
+      : null;
   const rentPrice = formatMoney(product?.rental_price);
   const description = stripHtml(product?.description || "");
   const shortDescription =
@@ -214,10 +231,22 @@ function ProductDetailPage({ productData = null }) {
   };
 
   const handleToggleWishlist = () => {
-    dispatch(toggleWishlistItem(getCartProduct()));
-    toast.success(isWishlisted ? "Removed from wishlist" : "Saved to wishlist");
-  };
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
 
+    if (!token || !userId) {
+      toast.error("Please login to save to wishlist");
+      return;
+    }
+
+    dispatch(toggleWishlistItem(getCartProduct()));
+
+    toast.success(
+      isWishlisted
+        ? "Removed from wishlist"
+        : "Saved to wishlist"
+    );
+  };
   useEffect(() => {
     setSelectedImage(productImages[0]?.src || "");
   }, [productImages]);
@@ -416,8 +445,10 @@ function ProductDetailPage({ productData = null }) {
                       <span className="pd-price-tag">Sale Price</span>
                       <strong className="pd-amount">{salePrice}</strong>
                       {originalSalePrice && <del className="pd-original">{originalSalePrice}</del>}
-                      {product.discount_percentage && (
-                        <span className="pd-save">{product.discount_percentage}% off</span>
+                      {Number(product.discount_percentage) > 5 && (
+                        <span className="pd-save">
+                          {product.discount_percentage}% off
+                        </span>
                       )}
                     </div>
                   ) : (

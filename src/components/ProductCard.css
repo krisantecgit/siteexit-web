@@ -21,13 +21,7 @@
     transform: translateY(-3px);
   }
   
-  .pc-card--oos {
-    opacity: 0.75;
-  }
-  
-  .pc-card--oos:hover {
-    transform: none;
-  }
+ 
   
   /* ── image area ───────────────────────────────────────────── */
   .pc-img-wrap {
@@ -275,4 +269,41 @@
 /* make add to cart stretch full remaining width */
 .pc-btn-add {
   flex: 1;
+}
+
+/* ── variants ───────────────────────────────────────────── */
+
+.pc-meta-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc-variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.pc-variant-item {
+  align-items: center;
+  background: #f7f8fa;
+  border: 1px solid #e8ebef;
+  border-radius: 999px;
+  display: flex;
+  gap: 5px;
+  padding: 5px 10px;
+}
+
+.pc-variant-label {
+  color: #6c747c;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pc-variant-value {
+  color: #07131f;
+  font-size: 11px;
+  font-weight: 700;
 }
